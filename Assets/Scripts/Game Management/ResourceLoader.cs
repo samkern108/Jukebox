@@ -6,12 +6,12 @@ public class ResourceLoader : MonoBehaviour {
 
 	private static string pathToSFX = "Audio/SFX/";
 	private static string pathToMusic = "Audio/Music/";
-	private static string pathToObjects = "Objects/";
+	private static string pathToPrefabs = "Prefabs/";
 	private static string pathToSprites = "Sprites/";
 
-	public static GameObject LoadGameObject(string name)
+	public static GameObject LoadPrefab(ResourceNamePrefab prefabName)
 	{
-		return Resources.Load <GameObject>(pathToObjects + name);
+		return Resources.Load <GameObject>(pathToPrefabs + prefabName.ToString());
 	}
 
 	public static Sprite LoadSprite(string name)
@@ -28,4 +28,10 @@ public class ResourceLoader : MonoBehaviour {
 	{
 		return Resources.Load <AudioClip> (pathToSFX + name);
 	}
+
+	//The names of all resources that are used by the game. This keeps them in a centralized place.
+	public enum ResourceNamePrefab {Dot, Stereo, PulseWave, Enemy};
+	public enum ResourceNameSprite {};
+	public enum ResourceNameMusic {};
+	public enum ResourceNameAudioClip {};
 }
