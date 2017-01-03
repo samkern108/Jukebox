@@ -10,13 +10,17 @@ public class StereoManager : MonoBehaviour {
 
 	public void Start() {
 		pulseObject = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.PulseWave);
-
-		InstantiateStereo (new Vector2(5,5));
 	}
 
 	public void InstantiateStereo(Vector2 clickPosition) {
 		GameObject stereo = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (stereo);
 		stereoClone.GetComponent <Stereo>().Initialize(clickPosition);
+	}
+
+	public void Update() {
+		if (Input.GetMouseButtonDown (0)) {
+			InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+		}
 	}
 }

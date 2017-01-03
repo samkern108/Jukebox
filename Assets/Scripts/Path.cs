@@ -8,15 +8,19 @@ public class Path : MonoBehaviour {
 
 	public Transform[] points;
 
-	void Start () {
+	void Awake () {
 		line = GetComponent <LineRenderer>();
 
 		points = transform.GetComponentsInChildren<Transform> ();
 
-		line.SetVertexCount (points.Length);
+		line.numPositions = points.Length;
 
 		for (int i = 0; i < points.Length; i++) {
 			line.SetPosition (i, points[i].position);
 		}
+	}
+
+	public Transform GetWaypoint(int index) {
+		return index < points.Length ? points [index] : points[points.Length-1];
 	}
 }

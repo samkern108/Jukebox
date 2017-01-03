@@ -7,23 +7,43 @@ public class Enemy : MonoBehaviour {
 	public float ampNeeded = 20.0f;
 
 	private float startTime;
-	private float speed = 0.02f;
+	private float speed = 0.2f;
 
 	private bool moving = false;
 
-	private Transform start, goal;
+	private Path path;
+	private Transform currentWaypoint, targetWaypoint;
+	private int waypointCount = 0;
 
-	public void Initialize(Transform start, Transform goal) {
-		this.start = start;
-		this.goal = goal;
-		this.transform.position = start.position;
+	public void Initialize(Path path) {
+		this.path = path;
+		currentWaypoint = path.GetWaypoint (waypointCount);
+		this.transform.position = currentWaypoint.position;
+
+		waypointCount++;
+		targetWaypoint = path.GetWaypoint (waypointCount);
+
 		startTime = Time.time;
 		moving = true;
 	}
 
 	void Update () {
 		if (moving) {
-			this.transform.position = Vector2.Lerp (start.position, goal.position, (speed * (Time.time - startTime)));
+			MoveAlongPath ();
+		}
+	}
+
+	private void MoveAlongPath() {
+		float percentage = (speed * (Time.time - startTime));
+		this.transform.position = Vector2.Lerp (currentWaypoint.position, targetWaypoint.position, percentage);
+	
+		//make this smoother (can halt)
+
+		if (this.transform.position == targetWaypoint.position) {
+			waypointCount++;
+			currentWaypoint = targetWaypoint;
+			targetWaypoint = path.GetWaypoint (waypointCount);
+			startTime = Time.time;
 		}
 	}
 }

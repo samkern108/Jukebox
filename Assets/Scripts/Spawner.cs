@@ -9,28 +9,20 @@ public class Spawner : MonoBehaviour {
 	private int spawnTotal = 100;
 	private int spawned = 0;
 
-	private GameObject enemy, start, goal;
+	private GameObject enemy;
+	private Path path;
 
 	public void Start() {
 		enemy = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Enemy);
 
-		start = GameObject.Find ("Spawner");
-		goal = GameObject.Find ("Goal");
+		path = GameObject.Find ("Path").GetComponent<Path>();
 
 		Timing.RunCoroutine (Co_Spawn());
 	}
 
-	public void OnGUI() {
-		if (Event.current.type == EventType.Repaint) {
-			Debug.Log ("ONGUI");
-			Drawing.DrawLine (new Vector2 (1, 0), new Vector2 (2, 4), Color.red, 10, true);
-			Drawing.DrawCircle (new Vector2 (1, 1), 3, Color.blue, 1, false, 1);
-		}
-	}
-
 	private IEnumerator<float> Co_Spawn() {
 		while(spawned < spawnTotal) {
-			Instantiate (enemy).GetComponent<Enemy>().Initialize(start.transform, goal.transform);
+			Instantiate (enemy).GetComponent<Enemy>().Initialize(path);
 			spawned ++;
 			yield return Timing.WaitForSeconds(spawnRate);
 		}
