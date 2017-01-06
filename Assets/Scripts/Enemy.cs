@@ -3,27 +3,22 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	public float amp = 0.0f;
-	public float ampNeeded = 20.0f;
-
 	private float startTime;
-	private float speed = 0.2f;
+	private float speed = 1.0f;
 
 	private bool moving = false;
 
 	private Path path;
-	private Transform currentWaypoint, targetWaypoint;
+	private Transform targetWaypoint;
 	private int waypointCount = 0;
 
 	public void Initialize(Path path) {
 		this.path = path;
-		currentWaypoint = path.GetWaypoint (waypointCount);
-		this.transform.position = currentWaypoint.position;
+		this.transform.position = path.GetWaypoint (waypointCount).position;
 
 		waypointCount++;
 		targetWaypoint = path.GetWaypoint (waypointCount);
 
-		startTime = Time.time;
 		moving = true;
 	}
 
@@ -34,16 +29,12 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void MoveAlongPath() {
-		float percentage = (speed * (Time.time - startTime));
-		this.transform.position = Vector2.Lerp (currentWaypoint.position, targetWaypoint.position, percentage);
-	
-		//make this smoother (can halt)
+		transform.position = Vector2.MoveTowards(transform.position, targetWaypoint.position, speed*Time.deltaTime);
 
-		if (this.transform.position == targetWaypoint.position) {
+		if(transform.position == targetWaypoint.position)
+		{
 			waypointCount++;
-			currentWaypoint = targetWaypoint;
 			targetWaypoint = path.GetWaypoint (waypointCount);
-			startTime = Time.time;
 		}
 	}
 }

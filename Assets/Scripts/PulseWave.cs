@@ -6,63 +6,62 @@ public class PulseWave : MonoBehaviour {
 	private Pulse pulse;
 	private CircleCollider2D circle;
 	private LineRenderer line;
+	private Color lineColor;
 
 	private float elapsedTime = 0.0f;
 
 	public void Initialize(Pulse pulse) {
-		this.pulse = pulse;
-		this.transform.position = pulse.position;
-	}
-
-	public void Start()
-	{
 		circle = GetComponent<CircleCollider2D> ();
 		line = GetComponent <LineRenderer>();
-		line.numPositions = numPositions + 1;
-		delta = (2 * Mathf.PI) / numPositions;
+
+		this.pulse = pulse;
+		this.transform.position = pulse.position;
+
+		circle.radius = this.pulse.radius - .5f;
+
+		lineColor = this.pulse.pulseColor;
+		lineColor.a = 0;
+		line.startColor = lineColor;
+		line.endColor = lineColor;
 	}
+
+	private int numPositions = 80;
 
 	public void Update() {
 		elapsedTime += Time.deltaTime;
-		circle.radius += Time.deltaTime * this.pulse.speed;
-		DrawCircle ();
+
+		circle.radius += Time.deltaTime/2;
+
+		if (elapsedTime <= .3f) {
+			lineColor.a += Time.deltaTime * 4;
+		} else {
+			lineColor.a -= Time.deltaTime;
+		}
+
+		line.startColor = lineColor;
+		line.endColor = lineColor;
+
+		line.DrawCircle (circle.radius, numPositions);
 	
-		if(circle.radius >= pulse.radius) {
+		if(elapsedTime >= 0.8f) {
 			Destroy(this.gameObject);
 		}
 	}
 
-	int numPositions = 40;
-	float delta;
 
-	private void DrawCircle()
-	{
-		float x;
-		float y;
-		for (int i = 0; i < (numPositions + 1); i++) {
+	//TODO this is for growing the pulse out of the center
 
-			x = circle.radius * Mathf.Cos (delta * i);
-			y = circle.radius * Mathf.Sin (delta * i);
-			line.SetPosition (i, transform.position + new Vector3(x, y, 0));
+	/*
+	public void Update() {
+		elapsedTime += Time.deltaTime;
+		circle.radius += Time.deltaTime * this.pulse.speed;
+
+		line.DrawCircle (circle.radius, numPositions);
+	
+		if(circle.radius >= pulse.radius) {
+			Destroy(this.gameObject);
 		}
-
-
-
-		/*// Calculate each point (theta) in the circle
-		// And set its position in the LineRenderer
-		int i = 0;
-		for(float theta = 0f; theta < (2*Mathf.PI); theta += thetaDelta)
-		{
-			// Calculate position of point
-			float x = (circle.radius*100) * Mathf.Cos(theta);
-			float y = (circle.radius*100) * Mathf.Sin(theta);
-
-			// Set the position of this point
-			Vector3 pos = new Vector3(x, y, 1);
-			line.SetPosition(i, pos);
-			i++;
-		}*/
-	}
+	}*/
 
 	public void OnTriggerEnter2D(Collider2D collider) {
 		collider.GetComponent <Dot>().ReactToPulse(pulse);

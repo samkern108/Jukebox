@@ -4,49 +4,46 @@ using System.Collections.Generic;
 using MovementEffects;
 
 public class Dot : MonoBehaviour {
+
+	public class PulseTimePair {
+		public Pulse pulse;
+		public float time;
+
+		public PulseTimePair(Pulse pulse, float time) {
+			this.pulse = pulse;
+			this.time = time;
+		}
+	}
 	
 	SpriteRenderer spriteRenderer;
-	private Color baseColor = Color.black;
-	private Color adjustedColor = Color.black;
 
-	private List<Pulse> reactions = new List<Pulse> ();
+	private float health = 200.0f;
+
+	private List<PulseTimePair> reactions = new List<PulseTimePair> ();
 
 	public void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 	}
 
 	public void ReactToPulse(Pulse pulse) {
-		reactions.Add (pulse);
+		reactions.Add (new PulseTimePair(pulse, 0.0f));
 	}
 
 	private Pulse activePulse;
 
 	public void Update() {
 
-		adjustedColor = baseColor;
-
 		for (int i = 0; i < reactions.Count; i++) {
 
-			activePulse = reactions [i];
+			activePulse = reactions [i].pulse;
 
-			activePulse.dotElapsedTime += Time.deltaTime;
+			reactions[i].time += Time.deltaTime;
 
-			//First Curve
-			if (activePulse.dotElapsedTime <= activePulse.lifeTime/2) {
-				adjustedColor += activePulse.pulseColor * (activePulse.dotElapsedTime / activePulse.lifeTime) * 2;
-			}
-			//Second Curve
-			else {
-				adjustedColor += activePulse.pulseColor * Mathf.Abs((1 - ((activePulse.dotElapsedTime/2) / activePulse.lifeTime) * 2));	
-			}
-
-			reactions [i] = activePulse;
-
-			if (activePulse.dotElapsedTime >= activePulse.lifeTime) {
+			spriteRenderer.color += activePulse.pulseColor * (activePulse.strength / health);
+				
+			if (reactions[i].time >= activePulse.lifeTime) {
 				reactions.RemoveAt (i);
 			}
 		}
-
-		spriteRenderer.color = adjustedColor;
 	}
 }

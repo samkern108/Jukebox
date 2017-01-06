@@ -5,9 +5,10 @@ using MovementEffects;
 
 public class Spawner : MonoBehaviour {
 
-	private float spawnRate = 1.0f;
 	private int spawnTotal = 100;
 	private int spawned = 0;
+
+	private Transform enemyParent;
 
 	private GameObject enemy;
 	private Path path;
@@ -15,16 +16,16 @@ public class Spawner : MonoBehaviour {
 	public void Start() {
 		enemy = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Enemy);
 
+		enemyParent = GameObject.Find ("Enemies").transform;
 		path = GameObject.Find ("Path").GetComponent<Path>();
-
-		Timing.RunCoroutine (Co_Spawn());
 	}
 
-	private IEnumerator<float> Co_Spawn() {
-		while(spawned < spawnTotal) {
-			Instantiate (enemy).GetComponent<Enemy>().Initialize(path);
+	public void Tick() {
+		if(spawned < spawnTotal) {
+			GameObject enemyInstance = Instantiate (enemy);
+			enemyInstance.GetComponent<Enemy>().Initialize(path);
+			enemyInstance.transform.SetParent (enemyParent);
 			spawned ++;
-			yield return Timing.WaitForSeconds(spawnRate);
 		}
 	}
 }
