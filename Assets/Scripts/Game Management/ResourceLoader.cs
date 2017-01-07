@@ -14,17 +14,17 @@ public class ResourceLoader : MonoBehaviour {
 		return Resources.Load <GameObject>(pathToPrefabs + prefabName.ToString());
 	}
 
-	public static Sprite LoadSprite(string name)
+	public static Sprite LoadSprite(ResourceNameSprite name)
 	{
 		return Resources.Load <Sprite> (pathToSprites + name);
 	}
 
-	public static AudioClip LoadMusic(string name)
+	public static AudioClip LoadMusic(ResourceNameMusic name)
 	{
 		return Resources.Load <AudioClip> (pathToMusic + name);
 	}
 
-	public static AudioClip LoadSFX(string name)
+	public static AudioClip LoadSFX(ResourceNameAudioClip name)
 	{
 		return Resources.Load <AudioClip> (pathToSFX + name);
 	}
@@ -33,5 +33,5 @@ public class ResourceLoader : MonoBehaviour {
 	public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy};
 	public enum ResourceNameSprite {};
 	public enum ResourceNameMusic {};
-	public enum ResourceNameAudioClip {};
+	public enum ResourceNameAudioClip {Distorted1, Horn1, Horn2, Horn3, Strum1, Strum2, Strum3, Strum4};
 }

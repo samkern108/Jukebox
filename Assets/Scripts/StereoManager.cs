@@ -9,6 +9,7 @@ public class Pulse {
 	public float strength;
 	public float timeBetweenPulses;
 	public Color pulseColor;
+	public ResourceLoader.ResourceNameAudioClip sfxName;
 
 	// Used by Dot
 	public Vector2 position;
@@ -21,16 +22,20 @@ public class Pulse {
 		this.strength = p.strength;
 		this.timeBetweenPulses = p.timeBetweenPulses;
 		this.pulseColor = p.pulseColor;
+		this.sfxName = p.sfxName;
 
 		this.lifeTime = this.radius/this.speed;
 	}
 
-	public Pulse(float radius, float speed, float strength, float time, Color color) {
+	public Pulse(float radius, float speed, float strength, float time, Color color, ResourceLoader.ResourceNameAudioClip sfxName) {
 		this.radius = radius;
 		this.speed = speed;
 		this.strength = strength;
 		this.timeBetweenPulses = time;
 		this.pulseColor = color;
+		this.sfxName = sfxName;
+
+		Debug.Log (sfxName);
 
 		this.lifeTime = this.radius/this.speed;
 	}
@@ -68,9 +73,9 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	private void InitializePulseTemplates() {
-		pulseTemplates.Add(new Pulse (2.0f, 2.0f, 1.0f, 0.5f, Color.red));
-		pulseTemplates.Add(new Pulse (4.0f, 1.0f, 1.0f, 2.0f, Color.blue));
-		pulseTemplates.Add(new Pulse (6.0f, 4.0f, 1.0f, 4f, Color.yellow));
+		pulseTemplates.Add(new Pulse (2.0f, 2.0f, 1.0f, 0.5f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
+		pulseTemplates.Add(new Pulse (4.0f, 1.0f, 1.0f, 2.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
+		pulseTemplates.Add(new Pulse (6.0f, 4.0f, 1.0f, 4f, Color.yellow, ResourceLoader.ResourceNameAudioClip.Strum3));
 	}
 
 	public static void InstantiateStereo(Vector2 clickPosition) {

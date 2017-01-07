@@ -16,10 +16,4 @@ public class BGMusicManager : MonoBehaviour {
 		player.volume = volume;
 	}
 
-	public static void PlayMusic(string music)
-	{
-		player.clip = ResourceLoader.LoadMusic (music);
-		player.Play ();
-	}
-
 }
