@@ -7,10 +7,11 @@ public class Stereo : MonoBehaviour {
 
 	private Pulse pulse;
 	private AudioSource audio;
+	private Animator anim;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
-		Debug.Log (pulse.sfxName);
 		audio = GetComponent <AudioSource>();
+		anim = GetComponent <Animator>();
 		audio.clip = ResourceLoader.LoadSFX (pulse.sfxName);
 		Debug.Log (audio.clip);
 
@@ -26,5 +27,6 @@ public class Stereo : MonoBehaviour {
 		pulseWave.GetComponent<PulseWave>().Initialize (pulse);
 		pulseWave.transform.SetParent (transform);
 		audio.Play ();
+		anim.SetTrigger ("Pulse");
 	}
 }

@@ -6,21 +6,21 @@ public class Path : MonoBehaviour {
 
 	private LineRenderer line;
 
-	public Transform[] points;
+	public List<Transform> points;
 
 	void Awake () {
 		line = GetComponent <LineRenderer>();
+		points = new List<Transform>(transform.GetComponentsInChildren<Transform> ());
+		points.RemoveAt (0);
 
-		points = transform.GetComponentsInChildren<Transform> ();
+		line.numPositions = points.Count;
 
-		line.numPositions = points.Length;
-
-		for (int i = 0; i < points.Length; i++) {
+		for (int i = 0; i < points.Count; i++) {
 			line.SetPosition (i, points[i].position);
 		}
 	}
 
 	public Transform GetWaypoint(int index) {
-		return index < points.Length ? points [index] : points[points.Length-1];
+		return index < points.Count ? points [index] : points[points.Count-1];
 	}
 }

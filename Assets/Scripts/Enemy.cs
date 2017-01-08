@@ -4,7 +4,7 @@ using System.Collections;
 public class Enemy : MonoBehaviour {
 
 	private float startTime;
-	private float speed = 1.0f;
+	private float speed = 4.0f;
 
 	private bool moving = false;
 
