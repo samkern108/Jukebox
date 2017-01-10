@@ -21,6 +21,6 @@ public class Path : MonoBehaviour {
 	}
 
 	public Transform GetWaypoint(int index) {
-		return index < points.Count ? points [index] : points[points.Count-1];
+		return index < points.Count ? points [index] : null;
 	}
 }

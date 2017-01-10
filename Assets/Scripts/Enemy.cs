@@ -35,6 +35,10 @@ public class Enemy : MonoBehaviour {
 		{
 			waypointCount++;
 			targetWaypoint = path.GetWaypoint (waypointCount);
+			//If we've reached the goal, we dieee!
+			if (!targetWaypoint) {
+				Destroy (this.gameObject);
+			}
 		}
 	}
 }
