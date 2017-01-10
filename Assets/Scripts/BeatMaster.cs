@@ -20,11 +20,12 @@ public class BeatMaster : MonoBehaviour {
 		height = 2f * Camera.main.orthographicSize;
 		width = height * Camera.main.aspect;
 
-		beatSize = (int)Mathf.Ceil(width/beatsAcrossWidth);
+		beatSize = (int)Mathf.Ceil(width/(beatsAcrossWidth));
 
 		beatsAcrossHeight = (int)Mathf.Ceil(height/beatSize);
 
-		BeatGrid.DrawBeatGrid(timeBetweenBeats);
+		BeatGrid.DrawBeatGrid();
+		GameObject.Find ("Path").GetComponent<Path>().InitializePath();
 	}
 
 	void Update () {

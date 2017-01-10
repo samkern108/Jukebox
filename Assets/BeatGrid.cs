@@ -10,7 +10,7 @@ public class BeatGrid : MonoBehaviour {
 		line = GetComponent <LineRenderer>();
 	}
 
-	public static void DrawBeatGrid(float beat) {
+	public static void DrawBeatGrid() {
 		line.numPositions = (BeatMaster.beatsAcrossWidth * 2) + (BeatMaster.beatsAcrossHeight * 2);
 
 		int position = 0;

@@ -6,21 +6,25 @@ public class Path : MonoBehaviour {
 
 	private LineRenderer line;
 
-	public List<Transform> points;
+	public List<Vector3> levelPath;
 
-	void Awake () {
+	public void InitializePath() {
 		line = GetComponent <LineRenderer>();
-		points = new List<Transform>(transform.GetComponentsInChildren<Transform> ());
-		points.RemoveAt (0);
+	
+		line.numPositions = levelPath.Count;
 
-		line.numPositions = points.Count;
+		Vector3 newPos;
 
-		for (int i = 0; i < points.Count; i++) {
-			line.SetPosition (i, points[i].position);
+		for (int i = 0; i < levelPath.Count; i++) {
+			newPos = levelPath [i];
+			newPos *= BeatMaster.beatSize;
+			newPos.y += (int)(Mathf.Ceil (BeatMaster.beatsAcrossHeight / 2) * BeatMaster.beatSize);
+			levelPath [i] = newPos;
+			line.SetPosition (i, levelPath[i]);
 		}
 	}
 
-	public Transform GetWaypoint(int index) {
-		return index < points.Count ? points [index] : null;
+	public Vector3 GetWaypoint(int index) {
+		return index < levelPath.Count ? levelPath [index] : levelPath[levelPath.Count - 1];
 	}
 }
