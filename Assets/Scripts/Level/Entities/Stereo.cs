@@ -13,7 +13,6 @@ public class Stereo : MonoBehaviour {
 		audio = GetComponent <AudioSource>();
 		anim = GetComponent <Animator>();
 		audio.clip = ResourceLoader.LoadSFX (pulse.sfxName);
-		Debug.Log (audio.clip);
 
 		GetComponent <LineRenderer>().startColor = pulse.pulseColor;
 		GetComponent <LineRenderer>().endColor = pulse.pulseColor;

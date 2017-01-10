@@ -15,21 +15,23 @@ public class Dot : MonoBehaviour {
 		}
 	}
 	
-	SpriteRenderer spriteRenderer;
-
-	private float health = 200.0f;
+	private SpriteRenderer spriteRenderer;
+	private Animator anim;
+	private Pulse activePulse;
 
 	private List<PulseTimePair> reactions = new List<PulseTimePair> ();
 
+	private float health = 200.0f;
+
 	public void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
+		anim = GetComponent <Animator>();
 	}
 
 	public void ReactToPulse(Pulse pulse) {
 		reactions.Add (new PulseTimePair(pulse, 0.0f));
+		anim.SetTrigger ("Pulse");
 	}
-
-	private Pulse activePulse;
 
 	public void Update() {
 
