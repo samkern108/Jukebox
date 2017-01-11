@@ -92,7 +92,7 @@ public class StereoManager : MonoBehaviour {
 		if (placeStereoMode) {
 			DrawStereoOnMouse ();
 			if (Input.GetMouseButtonDown (0)) {
-				InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+				InstantiateStereo (stereoPositionOnGrid);
 				placeStereoMode = false;
 				DrawStereoShadow (false);
 			}
@@ -132,9 +132,13 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	private int numPositions = 80;
+	private Vector2 stereoPositionOnGrid;
 	private void DrawStereoOnMouse() {
-		Vector2 newPos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		stereoShadow.transform.position = newPos;
+		Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
+		float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
+		stereoPositionOnGrid = new Vector2(x, y);
+		stereoShadow.transform.position = stereoPositionOnGrid;
 		stereoRadiusLineRenderer.DrawCircle (pulseTemplates[selectedPulseTemplate].radius, numPositions);
 	}
 }
