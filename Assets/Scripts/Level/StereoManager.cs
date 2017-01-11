@@ -35,13 +35,13 @@ public class Pulse {
 		this.pulseColor = color;
 		this.sfxName = sfxName;
 
-		Debug.Log (sfxName);
-
 		this.lifeTime = this.radius/this.speed;
 	}
 }
 
 public class StereoManager : MonoBehaviour {
+
+	public static StereoManager self;
 
 	private static List<Stereo> stereos = new List<Stereo>();
 	private static List<Pulse> pulseTemplates = new List<Pulse>();
@@ -57,6 +57,7 @@ public class StereoManager : MonoBehaviour {
 	private static Transform stereoParent;
 
 	public void Start() {
+		self = this;
 		p_pulseWave = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.PulseWave);
 		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.StereoShadow);
 
@@ -73,9 +74,9 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	private void InitializePulseTemplates() {
-		pulseTemplates.Add(new Pulse (2.0f, 2.0f, 1.0f, 2.0f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
-		pulseTemplates.Add(new Pulse (4.0f, 1.0f, 1.0f, 4.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
-		pulseTemplates.Add(new Pulse (6.0f, 4.0f, 1.0f, 8.0f, Color.yellow, ResourceLoader.ResourceNameAudioClip.Strum3));
+		pulseTemplates.Add(new Pulse (6.0f, 2.0f, 1.0f, 2.0f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
+		pulseTemplates.Add(new Pulse (8.0f, 1.0f, 1.0f, 4.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
+		pulseTemplates.Add(new Pulse (12.0f, 4.0f, 1.0f, 8.0f, Color.yellow, ResourceLoader.ResourceNameAudioClip.Strum3));
 	}
 
 	public static void InstantiateStereo(Vector2 clickPosition) {
@@ -100,6 +101,10 @@ public class StereoManager : MonoBehaviour {
 				SelectPulseTemplate (2);
 			}
 		}
+	}
+
+	public void Pause(bool pause) {
+		stereoShadow.SetActive (!pause);
 	}
 
 	private void SelectPulseTemplate(int template)

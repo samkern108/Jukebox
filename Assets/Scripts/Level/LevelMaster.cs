@@ -43,6 +43,8 @@ public class LevelMaster : MonoBehaviour {
 		} else {
 			Time.timeScale = 1f;
 		}
+
+		StereoManager.self.Pause (pause);
 	}
 
 	public static void RestartLevel() {
