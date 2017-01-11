@@ -44,7 +44,7 @@ public class LevelMaster : MonoBehaviour {
 			Time.timeScale = 1f;
 		}
 
-		StereoManager.self.Pause (pause);
+		StereoManager.self.DrawStereoShadow (!pause);
 	}
 
 	public static void RestartLevel() {

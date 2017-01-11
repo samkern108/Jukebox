@@ -45,7 +45,7 @@ public class StereoManager : MonoBehaviour {
 
 	private static List<Stereo> stereos = new List<Stereo>();
 	private static List<Pulse> pulseTemplates = new List<Pulse>();
-	private static int selectedPulseTemplate = 0;
+	private static int selectedPulseTemplate = -1;
 
 	public static GameObject p_pulseWave;
 	private static GameObject p_stereoShadow;
@@ -55,6 +55,8 @@ public class StereoManager : MonoBehaviour {
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
 	private static Transform stereoParent;
+
+	private static bool placeStereoMode = false;
 
 	public void Start() {
 		self = this;
@@ -70,7 +72,7 @@ public class StereoManager : MonoBehaviour {
 		stereoRadiusLineRenderer = stereoShadowRadius.GetComponent <LineRenderer> ();
 
 		InitializePulseTemplates ();
-		SelectPulseTemplate (0);
+		DrawStereoShadow (false);
 	}
 
 	private void InitializePulseTemplates() {
@@ -87,12 +89,15 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (!LevelMaster.paused) {
+		if (placeStereoMode) {
 			DrawStereoOnMouse ();
 			if (Input.GetMouseButtonDown (0)) {
 				InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+				placeStereoMode = false;
+				DrawStereoShadow (false);
 			}
-
+		}
+		if (!LevelMaster.paused) {
 			if (Input.GetKeyDown (KeyCode.Alpha1)) {
 				SelectPulseTemplate (0);
 			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
@@ -103,19 +108,27 @@ public class StereoManager : MonoBehaviour {
 		}
 	}
 
-	public void Pause(bool pause) {
-		stereoShadow.SetActive (!pause);
+	public void DrawStereoShadow(bool draw) {
+		stereoShadow.SetActive (draw);
 	}
 
 	private void SelectPulseTemplate(int template)
 	{
-		selectedPulseTemplate = template;
-		Color color = pulseTemplates [selectedPulseTemplate].pulseColor;
-		color.a = .4f;
-		stereoLineRenderer.startColor = color;
-		stereoLineRenderer.endColor = color;
-		stereoRadiusLineRenderer.startColor = color;
-		stereoRadiusLineRenderer.endColor = color;
+		if (selectedPulseTemplate == template && placeStereoMode) {
+			placeStereoMode = false;
+			DrawStereoShadow (false);
+		} else {
+			placeStereoMode = true;
+			selectedPulseTemplate = template;
+			Color color = pulseTemplates [selectedPulseTemplate].pulseColor;
+			color.a = .4f;
+			stereoLineRenderer.startColor = color;
+			stereoLineRenderer.endColor = color;
+			stereoRadiusLineRenderer.startColor = color;
+			stereoRadiusLineRenderer.endColor = color;
+			DrawStereoOnMouse ();
+			DrawStereoShadow (true);
+		}
 	}
 
 	private int numPositions = 80;
