@@ -41,6 +41,7 @@ public class Enemy : MonoBehaviour {
 			targetWaypoint = path.GetWaypoint (waypointCount);
 			//If we've reached the goal, we dieee!
 			if (targetWaypoint == transform.position) {
+				LevelMaster.EnemyDied ();
 				Destroy (this.gameObject);
 			}
 		}

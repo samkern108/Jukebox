@@ -18,6 +18,9 @@ public class Spawner : MonoBehaviour {
 
 		enemyParent = GameObject.Find ("Enemies").transform;
 		path = GameObject.Find ("Path").GetComponent<Path>();
+
+		// TODO(samkern): This is hacky.
+		LevelMaster.enemiesRemaining = spawnTotal;
 	}
 
 	public void Tick() {
@@ -26,6 +29,7 @@ public class Spawner : MonoBehaviour {
 			enemyInstance.GetComponent<Enemy>().Initialize(path);
 			enemyInstance.transform.SetParent (enemyParent);
 			spawned ++;
+			LevelMaster.EnemySpawned ();
 		}
 	}
 }

@@ -6,12 +6,12 @@ public class MenuManager : MonoBehaviour {
 
 	public void OnEnable()
 	{
-		GameManager.PauseGame (true);
+		LevelMaster.PauseGame (true);
 	}
 
 	public void OnDisable()
 	{
-		GameManager.PauseGame (false);
+		LevelMaster.PauseGame (false);
 	}
 
 	public void AdjustMusicVolume(float volume)

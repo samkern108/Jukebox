@@ -7,10 +7,11 @@ public class UIManager : MonoBehaviour {
 	public static UIManager self;
 	private static GameObject menu;
 
-	public void Start()
+	public void Awake()
 	{
 		self = this;
 		menu = transform.FindChild ("Menu").gameObject;
+		IOManager.Initialize ();
 	}
 
 	public void Update()
@@ -22,25 +23,33 @@ public class UIManager : MonoBehaviour {
 	public void ShowVictoryPanel()
 	{
 		transform.FindChild ("VictoryPanel").gameObject.SetActive (true);
-		GameManager.PauseGame (true);
+		LevelMaster.PauseGame (true);
 	}
 
 	public void ShowDefeatPanel()
 	{
 		transform.FindChild ("GameOverPanel").gameObject.SetActive (true);
-		GameManager.PauseGame (true);
+		LevelMaster.PauseGame (true);
+	}
+
+	public void SetEnemiesRemainingUI(int remaining) {
+		GameObject.Find ("EnemiesRemaining").GetComponent<Text>().text = remaining + "";
+	}
+
+	public void SetLivesRemainingUI(int remaining) {
+		GameObject.Find ("LivesRemaining").GetComponent<Text>().text = remaining + "";
 	}
 
 	public void RetryButton()
 	{
-		GameManager.PauseGame (false);
-		GameManager.RestartLevel ();
+		LevelMaster.PauseGame (false);
+		LevelMaster.RestartLevel ();
 		menu.SetActive (false);
 	}
 
 	public void QuitButton()
 	{
-		GameManager.PauseGame (false);
-		GameManager.QuitToMenu ();
+		LevelMaster.PauseGame (false);
+		LevelMaster.QuitToMenu ();
 	}
 }
