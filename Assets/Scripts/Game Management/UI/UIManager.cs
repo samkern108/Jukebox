@@ -42,14 +42,14 @@ public class UIManager : MonoBehaviour {
 
 	public void RetryButton()
 	{
-		LevelMaster.PauseGame (false);
-		LevelMaster.RestartLevel ();
-		menu.SetActive (false);
+		//LevelMaster.PauseGame (false);
+		//LevelMaster.RestartLevel ();
+		//menu.SetActive (false);
 	}
 
 	public void QuitButton()
 	{
-		LevelMaster.PauseGame (false);
-		LevelMaster.QuitToMenu ();
+		//LevelMaster.PauseGame (false);
+		//LevelMaster.QuitToMenu ();
 	}
 }

@@ -86,19 +86,19 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	void Update () {
-		DrawStereoOnMouse ();
-		if (Input.GetMouseButtonDown (0)) {
-			InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
-		}
+		if (!LevelMaster.paused) {
+			DrawStereoOnMouse ();
+			if (Input.GetMouseButtonDown (0)) {
+				InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+			}
 
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
-			SelectPulseTemplate (0);
-		}
-		else if (Input.GetKeyDown(KeyCode.Alpha2)) {
-			SelectPulseTemplate (1);
-		}
-		else if (Input.GetKeyDown(KeyCode.Alpha3)) {
-			SelectPulseTemplate (2);
+			if (Input.GetKeyDown (KeyCode.Alpha1)) {
+				SelectPulseTemplate (0);
+			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+				SelectPulseTemplate (1);
+			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+				SelectPulseTemplate (2);
+			}
 		}
 	}
 
