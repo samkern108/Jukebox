@@ -5,23 +5,10 @@ using MovementEffects;
 
 public class Dot : MonoBehaviour {
 
-	public class PulseTimePair {
-		public Pulse pulse;
-		public float time;
-
-		public PulseTimePair(Pulse pulse, float time) {
-			this.pulse = pulse;
-			this.time = time;
-		}
-	}
-	
 	private SpriteRenderer spriteRenderer;
 	private Animator anim;
-	private Pulse activePulse;
 
-	private List<PulseTimePair> reactions = new List<PulseTimePair> ();
-
-	private float health = 200.0f;
+	private float resistance = 10.0f;
 
 	public void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer> ();
@@ -29,23 +16,20 @@ public class Dot : MonoBehaviour {
 	}
 
 	public void ReactToPulse(Pulse pulse) {
-		reactions.Add (new PulseTimePair(pulse, 0.0f));
-		anim.SetTrigger ("Pulse");
+		//anim.SetTrigger ("Pulse");
+		Color newColor = spriteRenderer.color;
+		newColor.r = Mathf.Clamp(newColor.r + pulse.pulseColor.r * (pulse.strength / resistance), 0, 1);
+		newColor.g = Mathf.Clamp(newColor.g + pulse.pulseColor.g * (pulse.strength / resistance), 0, 1);
+		newColor.b = Mathf.Clamp(newColor.b + pulse.pulseColor.b * (pulse.strength / resistance), 0, 1);
+
+		spriteRenderer.color = newColor;
+
+		if(spriteRenderer.color == Color.white) {
+			Die ();
+		}
 	}
 
-	public void Update() {
-
-		for (int i = 0; i < reactions.Count; i++) {
-
-			activePulse = reactions [i].pulse;
-
-			reactions[i].time += Time.deltaTime;
-
-			spriteRenderer.color += activePulse.pulseColor * (activePulse.strength / health);
-				
-			if (reactions[i].time >= activePulse.lifeTime) {
-				reactions.RemoveAt (i);
-			}
-		}
+	private void Die() {
+		Destroy (this.gameObject);
 	}
 }

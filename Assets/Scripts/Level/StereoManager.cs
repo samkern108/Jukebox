@@ -76,9 +76,10 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	private void InitializePulseTemplates() {
-		pulseTemplates.Add(new Pulse (6.0f, 2.0f, 1.0f, 2.0f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
-		pulseTemplates.Add(new Pulse (8.0f, 1.0f, 1.0f, 4.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
-		pulseTemplates.Add(new Pulse (12.0f, 4.0f, 1.0f, 8.0f, Color.yellow, ResourceLoader.ResourceNameAudioClip.Strum3));
+		//Half a beat size stretches across one beat. One beat size = 1.5, Two beat sizes = 2.5... etc.)
+		pulseTemplates.Add(new Pulse (BeatMaster.beatSize, 2.0f, 2.0f, 2.0f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
+		pulseTemplates.Add(new Pulse (1.5f * BeatMaster.beatSize, 1.0f, 2.0f, 2.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
+		pulseTemplates.Add(new Pulse (2f * BeatMaster.beatSize, 4.0f, 4.0f, 8.0f, Color.green, ResourceLoader.ResourceNameAudioClip.Strum3));
 	}
 
 	public static void InstantiateStereo(Vector2 clickPosition) {

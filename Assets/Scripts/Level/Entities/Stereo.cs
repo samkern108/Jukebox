@@ -29,7 +29,7 @@ public class Stereo : MonoBehaviour {
 		GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
 		pulseWave.GetComponent<PulseWave>().Initialize (pulse);
 		pulseWave.transform.SetParent (transform);
-		audio.Play ();
+		//audio.Play ();
 		anim.SetTrigger ("Pulse");
 	}
 

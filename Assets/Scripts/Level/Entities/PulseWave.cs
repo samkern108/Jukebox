@@ -17,7 +17,7 @@ public class PulseWave : MonoBehaviour {
 		this.pulse = pulse;
 		this.transform.position = pulse.position;
 
-		circle.radius = this.pulse.radius - .5f;
+		circle.radius = this.pulse.radius - .1f;
 
 		lineColor = this.pulse.pulseColor;
 		lineColor.a = 0;
@@ -30,7 +30,7 @@ public class PulseWave : MonoBehaviour {
 	public void Update() {
 		elapsedTime += Time.deltaTime;
 
-		circle.radius += Time.deltaTime/2;
+		circle.radius += Time.deltaTime;
 
 		if (elapsedTime <= .3f) {
 			lineColor.a += Time.deltaTime * 4;

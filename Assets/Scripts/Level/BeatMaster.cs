@@ -12,6 +12,9 @@ public class BeatMaster : MonoBehaviour {
 	private static float timer = 0.0f;
 	public static float beatSize;
 
+	//SLOPPY! Instead, set the beat game object to be active when the game starts.
+	public static bool gameStarted = false;
+
 	AudioSource metronome;
 
 	void Start() {
@@ -28,13 +31,19 @@ public class BeatMaster : MonoBehaviour {
 		GameObject.Find ("Path").GetComponent<Path>().InitializePath();
 	}
 
-	void Update () {
-		timer += Time.deltaTime;
+	void FixedUpdate() {
+		if(gameStarted) {
 
-		if(timer >= timeBetweenBeats) {
-			BroadcastMessage("Tick");
-			metronome.Play ();
-			timer -= timeBetweenBeats;
+		timer += Time.fixedDeltaTime;
+		if (timer + Time.fixedDeltaTime <= timeBetweenBeats) {
+			Invoke ("SendTick", timeBetweenBeats-timer);
+			timer = (timer - timeBetweenBeats);
 		}
+		}
+	}
+		
+	private void SendTick() {
+		BroadcastMessage("Tick");
+		metronome.Play ();
 	}
 }
