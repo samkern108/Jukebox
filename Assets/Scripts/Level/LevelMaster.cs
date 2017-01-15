@@ -48,8 +48,10 @@ public class LevelMaster : MonoBehaviour {
 	}
 
 	public static void RestartLevel() {
+		Debug.Log ("Restarting.");
 	}
 
 	public static void QuitToMenu() {
+		Application.Quit ();
 	}
 }

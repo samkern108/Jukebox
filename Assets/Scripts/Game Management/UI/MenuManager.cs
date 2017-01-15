@@ -14,11 +14,6 @@ public class MenuManager : MonoBehaviour {
 		LevelMaster.PauseGame (false);
 	}
 
-	public void AdjustMusicVolume(float volume)
-	{
-		BGMusicManager.AdjustVolume (volume);
-	}
-
 	public void AdjustSFXVolume(float volume)
 	{
 		SFXManager.volume = volume;
@@ -27,5 +22,13 @@ public class MenuManager : MonoBehaviour {
 	public void ContinueLevel()
 	{
 		this.gameObject.SetActive (false);
+	}
+
+	public void RestartLevel() {
+		LevelMaster.RestartLevel ();
+	}
+
+	public void QuitToMenu() {
+		LevelMaster.QuitToMenu ();
 	}
 }

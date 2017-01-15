@@ -10,7 +10,7 @@ public class Stereo : MonoBehaviour {
 	private Animator anim;
 	private LineRenderer line;
 
-	private bool mouseOn = true;
+	//private bool mouseOn = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
 		audio = GetComponent <AudioSource>();
@@ -33,21 +33,13 @@ public class Stereo : MonoBehaviour {
 		anim.SetTrigger ("Pulse");
 	}
 
-	public void OnMouseEnter() {
-		Debug.Log ("enter");
+	/*public void OnMouseEnter() {
 		if (!mouseOn) {
-			Debug.Log ("trigger");
-			line.widthMultiplier = 1.5f;
-			line.startWidth = .3f;
-			line.endWidth = .3f;
 			mouseOn = true;
 		}
 	}
 
 	public void OnMouseExit() {
-		Debug.Log ("exit");
-		line.startWidth = .2f;
-		line.endWidth = .2f;
 		mouseOn = false;
-	}
+	}*/
 }

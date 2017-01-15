@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
 
 	public void Update()
 	{
+		//Escape toggles the menu.
 		if (Input.GetKeyDown (KeyCode.Escape))
 			menu.SetActive (!menu.activeInHierarchy);
 	}
@@ -38,18 +39,5 @@ public class UIManager : MonoBehaviour {
 
 	public void SetLivesRemainingUI(int remaining) {
 		GameObject.Find ("LivesRemaining").GetComponent<Text>().text = remaining + "";
-	}
-
-	public void RetryButton()
-	{
-		//LevelMaster.PauseGame (false);
-		//LevelMaster.RestartLevel ();
-		//menu.SetActive (false);
-	}
-
-	public void QuitButton()
-	{
-		//LevelMaster.PauseGame (false);
-		//LevelMaster.QuitToMenu ();
 	}
 }
