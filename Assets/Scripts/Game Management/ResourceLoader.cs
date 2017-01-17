@@ -30,7 +30,7 @@ public class ResourceLoader : MonoBehaviour {
 	}
 
 	//The names of all resources that are used by the game. This keeps them in a centralized place.
-	public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy};
+	public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy, StereoTemplate};
 	public enum ResourceNameSprite {};
 	public enum ResourceNameMusic {};
 	public enum ResourceNameAudioClip {Distorted1, Horn1, Horn2, Horn3, Strum1, Strum2, Strum3, Strum4};

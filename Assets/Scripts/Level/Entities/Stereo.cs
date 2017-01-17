@@ -6,16 +6,16 @@ using MovementEffects;
 public class Stereo : MonoBehaviour {
 
 	private Pulse pulse;
-	private AudioSource audio;
+	private AudioSource audioSource;
 	private Animator anim;
 	private LineRenderer line;
 
 	//private bool mouseOn = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
-		audio = GetComponent <AudioSource>();
+		audioSource = GetComponent <AudioSource>();
 		anim = GetComponentInChildren <Animator>();
-		audio.clip = ResourceLoader.LoadSFX (pulse.sfxName);
+		audioSource.clip = ResourceLoader.LoadSFX (pulse.sfxName);
 		line = GetComponentInChildren<LineRenderer> ();
 
 		line.startColor = pulse.pulseColor;
