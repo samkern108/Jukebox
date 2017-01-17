@@ -6,7 +6,7 @@ using MovementEffects;
 public class BeatMaster : MonoBehaviour {
 
 	public static float timeBetweenBeats = 1.0f;
-	public static int beatsAcrossWidth = 12;
+	public static int beatsAcrossWidth;
 	public static int beatsAcrossHeight;
 	public static float width, height;
 	private static float timer = 0.0f;
@@ -15,20 +15,48 @@ public class BeatMaster : MonoBehaviour {
 	//SLOPPY! Instead, set the beat game object to be active when the game starts.
 	public static bool gameStarted = false;
 
-	AudioSource metronome;
+	private AudioSource metronome;
+	private static LineRenderer line;
 
-	void Start() {
+	public void Awake()
+	{
 		metronome = GetComponent <AudioSource>();
+		line = GetComponent <LineRenderer>();
+	}
 
+	public static void InitializeBeat(GridJSON grid)
+	{
 		height = 2f * Camera.main.orthographicSize;
 		width = height * Camera.main.aspect;
+
+		beatsAcrossWidth = grid.w;
 
 		beatSize = (int)Mathf.Ceil(width/(beatsAcrossWidth));
 
 		beatsAcrossHeight = (int)Mathf.Ceil(height/beatSize);
 
-		BeatGrid.DrawBeatGrid();
+		DrawBeatGrid ();
 		GameObject.Find ("Path").GetComponent<Path>().InitializePath();
+	}
+
+	private static void DrawBeatGrid() {
+		line.numPositions = (BeatMaster.beatsAcrossWidth * 2) + (BeatMaster.beatsAcrossHeight * 2);
+
+		int position = 0;
+		float posY = 0;
+		float posX = BeatMaster.width;
+
+		for (int i = 0; i < BeatMaster.beatsAcrossWidth; i++) {
+			line.SetPosition (position++, new Vector3(i * BeatMaster.beatSize, posY));
+			posY = Mathf.Abs (posY - BeatMaster.height);
+			line.SetPosition (position++, new Vector3(i * BeatMaster.beatSize, posY));
+		}
+
+		for (int j = 0; j < BeatMaster.beatsAcrossHeight; j++) {
+			line.SetPosition (position++, new Vector3(posX, j * BeatMaster.beatSize));
+			posX = Mathf.Abs (posX - BeatMaster.width);
+			line.SetPosition (position++, new Vector3(posX, j * BeatMaster.beatSize));
+		}
 	}
 
 	void FixedUpdate() {

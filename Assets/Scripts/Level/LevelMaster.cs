@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class LevelMaster : MonoBehaviour {
 
-	public static int startLives = 10;
 	public static int enemiesRemaining, livesRemaining;
+	private LevelJSON level;
 
 	public static bool paused = false;
 
 	void Start () {
-		livesRemaining = startLives;
-		UIManager.self.SetLivesRemainingUI (startLives);
+		level = IOManager.LoadLevel ("One");
+		livesRemaining = level.lives;
+		UIManager.self.SetLivesRemainingUI (level.lives);
+		BeatMaster.InitializeBeat (level.grid);
+		StereoManager.InitializeStereosTemplates (level.stereos);
 	}
 
 	public static void EnemyDied() {

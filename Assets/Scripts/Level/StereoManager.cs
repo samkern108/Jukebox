@@ -7,7 +7,7 @@ public class Pulse {
 	public float radius;
 	public float speed;
 	public float strength;
-	public float timeBetweenPulses;
+	public int beatsBetweenPulses;
 	public Color pulseColor;
 	public ResourceLoader.ResourceNameAudioClip sfxName;
 
@@ -20,18 +20,18 @@ public class Pulse {
 		this.radius = p.radius;
 		this.speed = p.speed;
 		this.strength = p.strength;
-		this.timeBetweenPulses = p.timeBetweenPulses;
+		this.beatsBetweenPulses = p.beatsBetweenPulses;
 		this.pulseColor = p.pulseColor;
 		this.sfxName = p.sfxName;
 
 		this.lifeTime = this.radius/this.speed;
 	}
 
-	public Pulse(float radius, float speed, float strength, float time, Color color, ResourceLoader.ResourceNameAudioClip sfxName) {
+	public Pulse(float radius, float speed, float strength, int beatsBetween, Color color, ResourceLoader.ResourceNameAudioClip sfxName) {
 		this.radius = radius;
 		this.speed = speed;
 		this.strength = strength;
-		this.timeBetweenPulses = time;
+		this.beatsBetweenPulses = beatsBetween;
 		this.pulseColor = color;
 		this.sfxName = sfxName;
 
@@ -71,19 +71,18 @@ public class StereoManager : MonoBehaviour {
 		stereoLineRenderer = stereoShadow.GetComponent <LineRenderer> ();
 		stereoRadiusLineRenderer = stereoShadowRadius.GetComponent <LineRenderer> ();
 
-		InitializePulseTemplates ();
 		DrawStereoShadow (false);
 	}
 
-	private void InitializePulseTemplates() {
-		//Half a beat size stretches across one beat. One beat size = 1.5, Two beat sizes = 2.5... etc.)
-		pulseTemplates.Add(new Pulse (BeatMaster.beatSize, 2.0f, 2.0f, 2.0f, Color.red, ResourceLoader.ResourceNameAudioClip.Strum1));
-		pulseTemplates.Add(new Pulse (1.5f * BeatMaster.beatSize, 1.0f, 2.0f, 2.0f, Color.blue, ResourceLoader.ResourceNameAudioClip.Strum2));
-		pulseTemplates.Add(new Pulse (2f * BeatMaster.beatSize, 4.0f, 4.0f, 8.0f, Color.green, ResourceLoader.ResourceNameAudioClip.Strum3));
-
-		StereoTemplates.self.AddStereoTemplate (1,Color.red);
-		StereoTemplates.self.AddStereoTemplate (2,Color.blue);
-		StereoTemplates.self.AddStereoTemplate (3,Color.green);
+	public static void InitializeStereosTemplates(StereoJSON[] stereos) {
+		Color color;
+		int templateKey = 1;
+		foreach(StereoJSON stereo in stereos) {
+			color = new Color (stereo.color[0],stereo.color[1],stereo.color[2],1);
+			pulseTemplates.Add(new Pulse (stereo.radius * BeatMaster.beatSize, 2.0f, stereo.strength, stereo.beatsBetweenPulses, color, ResourceLoader.ResourceNameAudioClip.Strum1));
+			StereoTemplates.self.AddStereoTemplate (templateKey,color);
+			templateKey++;
+		}
 	}
 
 	public static void InstantiateStereo(Vector2 clickPosition) {

@@ -10,6 +10,8 @@ public class Stereo : MonoBehaviour {
 	private Animator anim;
 	private LineRenderer line;
 
+	private int beatCountdown = 0;
+
 	//private bool mouseOn = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
@@ -26,11 +28,16 @@ public class Stereo : MonoBehaviour {
 	}
 
 	public void Tick() {
-		GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
-		pulseWave.GetComponent<PulseWave>().Initialize (pulse);
-		pulseWave.transform.SetParent (transform);
-		//audio.Play ();
-		anim.SetTrigger ("Pulse");
+		if (beatCountdown == 0) {
+			beatCountdown = pulse.beatsBetweenPulses;
+			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
+			pulseWave.GetComponent<PulseWave> ().Initialize (pulse);
+			pulseWave.transform.SetParent (transform);
+			//audio.Play ();
+			anim.SetTrigger ("Pulse");
+		} else {
+			beatCountdown--;
+		}
 	}
 
 	/*public void OnMouseEnter() {
