@@ -12,7 +12,7 @@ public class SFXManager : MonoBehaviour {
 		source = GetComponent <AudioSource>();
 	}
 
-	public void PlayClip(ResourceLoader.ResourceNameAudioClip name)
+	public void PlayClip(ResourceNameAudioClip name)
 	{
 		if (playing)
 			return;

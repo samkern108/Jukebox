@@ -9,7 +9,7 @@ public class Pulse {
 	public float strength;
 	public int beatsBetweenPulses;
 	public Color pulseColor;
-	public ResourceLoader.ResourceNameAudioClip sfxName;
+	public ResourceNameAudioClip sfxName;
 
 	// Used by Dot
 	public Vector2 position;
@@ -33,12 +33,12 @@ public class Pulse {
 		this.strength = 0f;
 		this.beatsBetweenPulses = 0;
 		this.pulseColor = Color.white;
-		this.sfxName = ResourceLoader.ResourceNameAudioClip.Distorted1;
+		this.sfxName = ResourceNameAudioClip.Distorted1;
 
 		this.lifeTime = 0f;
 	}
 
-	public Pulse(float radius, float speed, float strength, int beatsBetween, Color color, ResourceLoader.ResourceNameAudioClip sfxName) {
+	public Pulse(float radius, float speed, float strength, int beatsBetween, Color color, ResourceNameAudioClip sfxName) {
 		this.radius = radius;
 		this.speed = speed;
 		this.strength = strength;
@@ -64,17 +64,17 @@ public class StereoManager : MonoBehaviour {
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
 	private static Transform stereoParent;
-	private Transform editStereoPanel;
+	private static GameObject editStereoPanel;
 
 	private static bool placeStereoMode = true, editStereoMode = false;
 
 	public void Start() {
 		self = this;
-		p_pulseWave = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.PulseWave);
-		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.StereoShadow);
+		p_pulseWave = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWave);
+		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceNamePrefab.StereoShadow);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
-		editStereoPanel = GameObject.Find ("EditStereoPanel").transform;
+		editStereoPanel = GameObject.Find ("EditStereoPanel");
 
 		stereoShadow = Instantiate (p_stereoShadow);
 		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;
@@ -86,7 +86,7 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	public static Stereo InstantiateStereo(Vector2 clickPosition) {
-		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Stereo);
+		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
 		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, new Pulse());
@@ -107,7 +107,7 @@ public class StereoManager : MonoBehaviour {
 				}
 				editStereoMode = false;
 				selectedStereo = null;
-				editStereoPanel.position = Vector3.zero;
+				editStereoPanel.SetActive (false);
 			}
 		}
 		else if (placeStereoMode) {
@@ -123,7 +123,6 @@ public class StereoManager : MonoBehaviour {
 
 				if (hit.collider) {
 					selectedStereo = hit.collider.gameObject.GetComponent<Stereo>();
-					editStereoPanel.position = selectedStereo.transform.position;
 				} else {
 					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
@@ -131,8 +130,9 @@ public class StereoManager : MonoBehaviour {
 					stereoPositionOnGrid = new Vector2(x, y);*/
 
 					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
-					editStereoPanel.position = selectedStereo.transform.position;
 				}
+				editStereoPanel.transform.position = selectedStereo.transform.position;
+				editStereoPanel.SetActive (true);
 				editStereoMode = true;
 			}
 		}

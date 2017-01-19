@@ -14,7 +14,7 @@ public class Spawner : MonoBehaviour {
 	private Path path;
 
 	public void Start() {
-		enemy = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Enemy);
+		enemy = ResourceLoader.LoadPrefab (ResourceNamePrefab.Enemy);
 
 		enemyParent = GameObject.Find ("Enemies").transform;
 		path = GameObject.Find ("Path").GetComponent<Path>();

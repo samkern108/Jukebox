@@ -14,7 +14,7 @@ public class StereoTemplates : MonoBehaviour {
 
 	public void Start() {
 		self = this;
-		p_stereoTemplate = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.StereoTemplate);
+		p_stereoTemplate = ResourceLoader.LoadPrefab (ResourceNamePrefab.StereoTemplate);
 		width = p_stereoTemplate.GetComponent <RectTransform> ().sizeDelta.y;
 	}
 

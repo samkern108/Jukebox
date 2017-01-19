@@ -2,6 +2,12 @@
 using System.Collections;
 using System.IO;
 
+//The names of all resources that are used by the game. This keeps them in a centralized place.
+public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy, StereoTemplate, ColorPanel};
+public enum ResourceNameSprite {};
+public enum ResourceNameMusic {};
+public enum ResourceNameAudioClip {Distorted1, Horn1, Horn2, Horn3, Strum1, Strum2, Strum3, Strum4};
+
 public class ResourceLoader : MonoBehaviour {
 
 	private static string pathToSFX = "Audio/SFX/";
@@ -28,10 +34,4 @@ public class ResourceLoader : MonoBehaviour {
 	{
 		return Resources.Load <AudioClip> (pathToSFX + name);
 	}
-
-	//The names of all resources that are used by the game. This keeps them in a centralized place.
-	public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy, StereoTemplate};
-	public enum ResourceNameSprite {};
-	public enum ResourceNameMusic {};
-	public enum ResourceNameAudioClip {Distorted1, Horn1, Horn2, Horn3, Strum1, Strum2, Strum3, Strum4};
 }
