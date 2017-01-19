@@ -27,6 +27,17 @@ public class Pulse {
 		this.lifeTime = this.radius/this.speed;
 	}
 
+	public Pulse() {
+		this.radius = 1.5f * BeatMaster.beatSize;
+		this.speed = 0f;
+		this.strength = 0f;
+		this.beatsBetweenPulses = 0;
+		this.pulseColor = Color.white;
+		this.sfxName = ResourceLoader.ResourceNameAudioClip.Distorted1;
+
+		this.lifeTime = 0f;
+	}
+
 	public Pulse(float radius, float speed, float strength, int beatsBetween, Color color, ResourceLoader.ResourceNameAudioClip sfxName) {
 		this.radius = radius;
 		this.speed = speed;
@@ -44,8 +55,6 @@ public class StereoManager : MonoBehaviour {
 	public static StereoManager self;
 
 	private static List<Stereo> stereos = new List<Stereo>();
-	private static List<Pulse> pulseTemplates = new List<Pulse>();
-	private static int selectedPulseTemplate = -1;
 
 	public static GameObject p_pulseWave;
 	private static GameObject p_stereoShadow;
@@ -55,8 +64,9 @@ public class StereoManager : MonoBehaviour {
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
 	private static Transform stereoParent;
+	private Transform editStereoPanel;
 
-	private static bool placeStereoMode = false;
+	private static bool placeStereoMode = true, editStereoMode = false;
 
 	public void Start() {
 		self = this;
@@ -64,6 +74,7 @@ public class StereoManager : MonoBehaviour {
 		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.StereoShadow);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
+		editStereoPanel = GameObject.Find ("EditStereoPanel").transform;
 
 		stereoShadow = Instantiate (p_stereoShadow);
 		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;
@@ -74,65 +85,61 @@ public class StereoManager : MonoBehaviour {
 		DrawStereoShadow (false);
 	}
 
-	public static void InitializeStereosTemplates(StereoJSON[] stereos) {
-		Color color;
-		int templateKey = 1;
-		foreach(StereoJSON stereo in stereos) {
-			color = new Color (stereo.color[0],stereo.color[1],stereo.color[2],1);
-			pulseTemplates.Add(new Pulse (stereo.radius * BeatMaster.beatSize, 2.0f, stereo.strength, stereo.beatsBetweenPulses, color, ResourceLoader.ResourceNameAudioClip.Strum1));
-			StereoTemplates.self.AddStereoTemplate (templateKey,color);
-			templateKey++;
-		}
-	}
-
-	public static void InstantiateStereo(Vector2 clickPosition) {
+	public static Stereo InstantiateStereo(Vector2 clickPosition) {
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceLoader.ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
-		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, new Pulse(pulseTemplates[selectedPulseTemplate]));
+		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, new Pulse());
+		return stereoClone.GetComponent <Stereo> ();
 	}
 
+	private Stereo selectedStereo;
+
 	void Update () {
-		if (placeStereoMode) {
-			DrawStereoOnMouse ();
+		if (editStereoMode) {
 			if (Input.GetMouseButtonDown (0)) {
-				InstantiateStereo (stereoPositionOnGrid);
-				placeStereoMode = false;
-				DrawStereoShadow (false);
+				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("EditStereoOption"));
+
+				if (hit.collider) {
+					Color color = hit.collider.gameObject.GetComponent<SpriteRenderer> ().color;
+					selectedStereo.SetColor (color);
+				}
+				editStereoMode = false;
+				selectedStereo = null;
+				editStereoPanel.position = Vector3.zero;
 			}
 		}
-		if (!LevelMaster.paused) {
-			if (Input.GetKeyDown (KeyCode.Alpha1)) {
-				SelectPulseTemplate (0);
-			} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
-				SelectPulseTemplate (1);
-			} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
-				SelectPulseTemplate (2);
+		else if (placeStereoMode) {
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
+
+			if(!hit.collider)
+				DrawStereoOnMouse ();
+			
+			if (Input.GetMouseButtonDown (0)) {
+				//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+				//RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
+
+				if (hit.collider) {
+					selectedStereo = hit.collider.gameObject.GetComponent<Stereo>();
+					editStereoPanel.position = selectedStereo.transform.position;
+				} else {
+					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
+					float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
+					stereoPositionOnGrid = new Vector2(x, y);*/
+
+					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
+					editStereoPanel.position = selectedStereo.transform.position;
+				}
+				editStereoMode = true;
 			}
 		}
 	}
 
 	public void DrawStereoShadow(bool draw) {
 		stereoShadow.SetActive (draw);
-	}
-
-	private void SelectPulseTemplate(int template)
-	{
-		if (selectedPulseTemplate == template && placeStereoMode) {
-			placeStereoMode = false;
-			DrawStereoShadow (false);
-		} else {
-			placeStereoMode = true;
-			selectedPulseTemplate = template;
-			Color color = pulseTemplates [selectedPulseTemplate].pulseColor;
-			color.a = .4f;
-			stereoLineRenderer.startColor = color;
-			stereoLineRenderer.endColor = color;
-			stereoRadiusLineRenderer.startColor = color;
-			stereoRadiusLineRenderer.endColor = color;
-			DrawStereoOnMouse ();
-			DrawStereoShadow (true);
-		}
 	}
 
 	private int numPositions = 80;
@@ -143,6 +150,5 @@ public class StereoManager : MonoBehaviour {
 		float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
 		stereoPositionOnGrid = new Vector2(x, y);
 		stereoShadow.transform.position = stereoPositionOnGrid;
-		stereoRadiusLineRenderer.DrawCircle (pulseTemplates[selectedPulseTemplate].radius, numPositions);
 	}
 }

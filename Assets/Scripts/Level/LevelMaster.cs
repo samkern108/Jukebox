@@ -14,7 +14,6 @@ public class LevelMaster : MonoBehaviour {
 		livesRemaining = level.lives;
 		UIManager.self.SetLivesRemainingUI (level.lives);
 		BeatMaster.InitializeBeat (level.grid);
-		StereoManager.InitializeStereosTemplates (level.stereos);
 	}
 
 	public static void EnemyDied() {
