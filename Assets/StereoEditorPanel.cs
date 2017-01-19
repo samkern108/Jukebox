@@ -10,7 +10,6 @@ public class StereoEditorPanel : MonoBehaviour {
 	public void Awake() {
 		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
 		self = this;
-		gameObject.SetActive (false);
 	}
 
 	public static void InitializeStereoColors (float[][] stereoColors)

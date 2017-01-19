@@ -21,5 +21,12 @@ public class GridJSON
 [System.Serializable]
 public class PathJSON
 {
+	public SpawnerJSON spawner { get; set; }
 	public int[][] points { get; set; }
+}
+
+[System.Serializable]
+public class SpawnerJSON
+{
+	
 }

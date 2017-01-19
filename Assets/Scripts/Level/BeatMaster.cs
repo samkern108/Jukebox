@@ -36,7 +36,6 @@ public class BeatMaster : MonoBehaviour {
 		beatsAcrossHeight = (int)Mathf.Ceil(height/beatSize);
 
 		DrawBeatGrid ();
-		GameObject.Find ("Path").GetComponent<Path>().InitializePath();
 	}
 
 	private static void DrawBeatGrid() {

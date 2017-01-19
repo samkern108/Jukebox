@@ -13,14 +13,17 @@ public class Spawner : MonoBehaviour {
 	private GameObject enemy;
 	private Path path;
 
-	public void Start() {
-		enemy = ResourceLoader.LoadPrefab (ResourceNamePrefab.Enemy);
+	public void InitializeSpawner(Path path, SpawnerJSON spawner) {
+		this.path = path;
 
+		transform.SetParent (GameObject.Find("BeatMaster").transform, false);
+		transform.position = Vector3.zero;
+
+		enemy = ResourceLoader.LoadPrefab (ResourceNamePrefab.Enemy);
 		enemyParent = GameObject.Find ("Enemies").transform;
-		path = GameObject.Find ("Path").GetComponent<Path>();
 
 		// TODO(samkern): This is hacky.
-		LevelMaster.enemiesRemaining = spawnTotal;
+		LevelMaster.enemiesRemaining += spawnTotal;
 	}
 
 	public void Tick() {

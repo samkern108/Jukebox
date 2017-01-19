@@ -15,6 +15,14 @@ public class LevelMaster : MonoBehaviour {
 		UIManager.self.SetLivesRemainingUI (level.lives);
 		BeatMaster.InitializeBeat (level.grid);
 		StereoEditorPanel.InitializeStereoColors (level.stereoColors);
+
+		GameObject p_Path = ResourceLoader.LoadPrefab (ResourceNamePrefab.Path);
+		Path path;
+		foreach (PathJSON pathJSON in level.paths) {
+			path = Instantiate (p_Path).GetComponent<Path>();
+			path.InitializePath (pathJSON);
+			path.transform.position = Vector3.zero;
+		}
 	}
 
 	public static void EnemyDied() {

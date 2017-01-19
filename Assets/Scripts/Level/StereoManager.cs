@@ -68,13 +68,14 @@ public class StereoManager : MonoBehaviour {
 
 	private static bool placeStereoMode = true, editStereoMode = false;
 
-	public void Start() {
+	public void Awake() {
 		self = this;
 		p_pulseWave = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWave);
 		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceNamePrefab.StereoShadow);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
 		editStereoPanel = GameObject.Find ("EditStereoPanel");
+		editStereoPanel.SetActive (false);
 
 		stereoShadow = Instantiate (p_stereoShadow);
 		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;
