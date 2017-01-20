@@ -75,7 +75,6 @@ public class StereoManager : MonoBehaviour {
 
 		stereoParent = GameObject.Find ("Stereos").transform;
 		editStereoPanel = GameObject.Find ("EditStereoPanel");
-		editStereoPanel.SetActive (false);
 
 		stereoShadow = Instantiate (p_stereoShadow);
 		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;

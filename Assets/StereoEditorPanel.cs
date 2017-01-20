@@ -5,15 +5,12 @@ using UnityEngine;
 public class StereoEditorPanel : MonoBehaviour {
 
 	private static GameObject p_ColorPanel;
-	private static StereoEditorPanel self;
-
-	public void Awake() {
-		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
-		self = this;
-	}
 
 	public static void InitializeStereoColors (float[][] stereoColors)
 	{
+		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
+		GameObject self = GameObject.Find ("EditStereoPanel"); //hacky :)
+
 		Color c;
 		GameObject colorPanel;
 		float theta = 0;
@@ -26,5 +23,7 @@ public class StereoEditorPanel : MonoBehaviour {
 			colorPanel.transform.position = new Vector2 (3 * Mathf.Cos(theta), 3 * Mathf.Sin(theta));
 			theta += ((2 * Mathf.PI) / stereoColors.Length);
 		}
+
+		self.SetActive (false);
 	}
 }

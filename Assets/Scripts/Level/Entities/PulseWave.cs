@@ -64,6 +64,6 @@ public class PulseWave : MonoBehaviour {
 	}*/
 
 	public void OnTriggerEnter2D(Collider2D collider) {
-		collider.GetComponent <Dot>().ReactToPulse(pulse);
+		collider.GetComponent <Enemy>().ReactToPulse(pulse);
 	}
 }

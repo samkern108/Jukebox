@@ -3,6 +3,15 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
+	private SpriteRenderer spriteRenderer;
+	private Animator anim;
+
+	/*Health determines the number of rings the dot has.
+	 * The inner ring gets filled up first. The outer ring second, obviously.
+	 * The hard part is that the second and third rings only get filled up when the dot ONLY has that other color in previous dots.
+	 */
+	private int health = 1;
+
 	private float startTime;
 	public float spacesPerBeat = 1f;
 
@@ -15,6 +24,9 @@ public class Enemy : MonoBehaviour {
 	private int waypointCount = 0;
 
 	public void Initialize(Path path) {
+		spriteRenderer = GetComponent<SpriteRenderer> ();
+		anim = GetComponent <Animator>();
+
 		this.path = path;
 		this.transform.position = path.GetWaypoint (waypointCount);
 
@@ -41,9 +53,16 @@ public class Enemy : MonoBehaviour {
 			targetWaypoint = path.GetWaypoint (waypointCount);
 			//If we've reached the goal, we dieee!
 			if (targetWaypoint == transform.position) {
-				LevelMaster.EnemyDied ();
+				if(spriteRenderer.color != path.endColor)
+					LevelMaster.EnemyDied ();
+				
 				Destroy (this.gameObject);
 			}
 		}
+	}
+
+	public void ReactToPulse(Pulse pulse) {
+		//anim.SetTrigger ("Pulse");
+		spriteRenderer.color = ColorHelper.CombineColors (spriteRenderer.color, pulse.pulseColor);
 	}
 }

@@ -5,8 +5,8 @@ using MovementEffects;
 
 public class Spawner : MonoBehaviour {
 
-	private int spawnTotal = 100;
-	private int spawned = 0;
+	private int spawnTotal, spawned = 0;
+	private int beatsBetweenSpawns, countdown;
 
 	private Transform enemyParent;
 
@@ -22,17 +22,25 @@ public class Spawner : MonoBehaviour {
 		enemy = ResourceLoader.LoadPrefab (ResourceNamePrefab.Enemy);
 		enemyParent = GameObject.Find ("Enemies").transform;
 
-		// TODO(samkern): This is hacky.
+		beatsBetweenSpawns = spawner.beatsBetweenSpawn;
+		countdown = beatsBetweenSpawns;
+
+		spawnTotal = spawner.numEnemies;
 		LevelMaster.enemiesRemaining += spawnTotal;
 	}
 
 	public void Tick() {
-		if(spawned < spawnTotal) {
-			GameObject enemyInstance = Instantiate (enemy);
-			enemyInstance.GetComponent<Enemy>().Initialize(path);
-			enemyInstance.transform.SetParent (enemyParent);
-			spawned ++;
-			LevelMaster.EnemySpawned ();
+		if (countdown <= 0) {
+			if (spawned < spawnTotal) {
+				GameObject enemyInstance = Instantiate (enemy);
+				enemyInstance.GetComponent<Enemy> ().Initialize (path);
+				enemyInstance.transform.SetParent (enemyParent);
+				spawned++;
+				LevelMaster.EnemySpawned ();
+			}
+			countdown = beatsBetweenSpawns;
 		}
+		else
+			countdown--;
 	}
 }

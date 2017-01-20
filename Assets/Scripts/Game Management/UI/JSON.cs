@@ -23,10 +23,13 @@ public class PathJSON
 {
 	public SpawnerJSON spawner { get; set; }
 	public int[][] points { get; set; }
+	public int[] endColor { get; set; }
 }
 
 [System.Serializable]
 public class SpawnerJSON
 {
-	
+	public int numEnemies { get; set; }
+	public int beatsBetweenSpawn { get; set; }
+	public int[] startColor { get; set; }
 }
