@@ -64,7 +64,6 @@ public class StereoManager : MonoBehaviour {
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
 	private static Transform stereoParent;
-	private static GameObject editStereoPanel;
 
 	private static bool placeStereoMode = true, editStereoMode = false;
 
@@ -74,7 +73,6 @@ public class StereoManager : MonoBehaviour {
 		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceNamePrefab.StereoShadow);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
-		editStereoPanel = GameObject.Find ("EditStereoPanel");
 
 		stereoShadow = Instantiate (p_stereoShadow);
 		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;
@@ -99,15 +97,13 @@ public class StereoManager : MonoBehaviour {
 		if (editStereoMode) {
 			if (Input.GetMouseButtonDown (0)) {
 				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("EditStereoOption"));
+				RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI"));
 
-				if (hit.collider) {
-					Color color = hit.collider.gameObject.GetComponent<SpriteRenderer> ().color;
-					selectedStereo.SetColor (color);
+				if (!hit.collider) {
+					editStereoMode = false;
+					selectedStereo = null;
+					StereoEditorPanel.EditorModeOff ();
 				}
-				editStereoMode = false;
-				selectedStereo = null;
-				editStereoPanel.SetActive (false);
 			}
 		}
 		else if (placeStereoMode) {
@@ -131,8 +127,7 @@ public class StereoManager : MonoBehaviour {
 
 					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
 				}
-				editStereoPanel.transform.position = selectedStereo.transform.position;
-				editStereoPanel.SetActive (true);
+				StereoEditorPanel.EditorModeOn (selectedStereo);
 				editStereoMode = true;
 			}
 		}

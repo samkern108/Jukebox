@@ -10,7 +10,9 @@ public class Stereo : MonoBehaviour {
 	private Animator anim;
 	private LineRenderer line;
 
-	private int beatCountdown = 0;
+	public int[] beatValues;
+	private int beatCounter = 0;
+	private int numBeats = 4;
 
 	private bool deactivated = true;
 
@@ -21,6 +23,8 @@ public class Stereo : MonoBehaviour {
 
 		line.startColor = pulse.pulseColor;
 		line.endColor = pulse.pulseColor;
+
+		beatValues = new int[numBeats];
 
 		audioSource.clip = ResourceLoader.LoadSFX (pulse.sfxName);
 
@@ -43,19 +47,22 @@ public class Stereo : MonoBehaviour {
 		}
 	}
 
+	public void SetBeatValue(int beat, int value) {
+		beatValues [beat] = value;
+	}
+
 	public void Tick() {
 		if (deactivated)
 			return;
 		
-		if (beatCountdown == 0) {
-			beatCountdown = pulse.beatsBetweenPulses;
+		if (beatValues[beatCounter] != 0) {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
 			pulseWave.GetComponent<PulseWave> ().Initialize (pulse);
 			pulseWave.transform.SetParent (transform);
 			//audio.Play ();
 			anim.SetTrigger ("Pulse");
-		} else {
-			beatCountdown--;
 		}
+
+		beatCounter = (beatCounter + 1)%numBeats;
 	}
 }
