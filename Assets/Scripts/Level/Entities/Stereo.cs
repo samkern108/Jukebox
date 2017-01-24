@@ -7,6 +7,8 @@ public class Stereo : MonoBehaviour {
 
 	private Pulse pulse;
 	private AudioSource audioSource;
+	private AudioDistortionFilter audioDistortionFilter;
+	private AudioLowPassFilter audioLowPassFilter;
 	private Animator anim;
 	private LineRenderer line;
 
@@ -18,6 +20,9 @@ public class Stereo : MonoBehaviour {
 
 	public void Initialize(Vector2 position, Pulse pulse) {
 		audioSource = GetComponent <AudioSource>();
+		audioLowPassFilter = GetComponent <AudioLowPassFilter>();
+		audioDistortionFilter = GetComponent <AudioDistortionFilter>();
+
 		anim = GetComponentInChildren <Animator>();
 		line = GetComponentInChildren<LineRenderer> ();
 
@@ -61,9 +66,15 @@ public class Stereo : MonoBehaviour {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
 			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beatCounter]);
 			pulseWave.transform.SetParent (transform);
-			//audio.Play ();
+			PlayAudio (beatValues[beatCounter]);
 		}
 
 		beatCounter = (beatCounter + 1)%numBeats;
+	}
+
+	public void PlayAudio(int beatValue) {
+		audioLowPassFilter.cutoffFrequency = beatValue * 2000;
+		audioDistortionFilter.distortionLevel = (beatValue * .25f);
+		audioSource.Play ();
 	}
 }
