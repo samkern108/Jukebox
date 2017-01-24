@@ -15,18 +15,6 @@ public class Pulse {
 	public Vector2 position;
 	public float lifeTime;
 
-	public Pulse(Pulse p) {
-		//lazy man's pass by value
-		this.radius = p.radius;
-		this.speed = p.speed;
-		this.strength = p.strength;
-		this.beatsBetweenPulses = p.beatsBetweenPulses;
-		this.pulseColor = p.pulseColor;
-		this.sfxName = p.sfxName;
-
-		this.lifeTime = this.radius/this.speed;
-	}
-
 	public Pulse() {
 		this.radius = .5f * BeatMaster.beatSize;
 		this.speed = 0f;
@@ -36,17 +24,6 @@ public class Pulse {
 		this.sfxName = ResourceLoader.GetRandomSFX();
 
 		this.lifeTime = 0f;
-	}
-
-	public Pulse(float radius, float speed, float strength, int beatsBetween, Color color, ResourceNameAudioClip sfxName) {
-		this.radius = radius;
-		this.speed = speed;
-		this.strength = strength;
-		this.beatsBetweenPulses = beatsBetween;
-		this.pulseColor = color;
-		this.sfxName = sfxName;
-
-		this.lifeTime = this.radius/this.speed;
 	}
 }
 
@@ -65,7 +42,7 @@ public class StereoManager : MonoBehaviour {
 
 	private static Transform stereoParent;
 
-	private static bool placeStereoMode = true, editStereoMode = false;
+	public static bool spawningDisabled = false;
 
 	public void Awake() {
 		self = this;
@@ -100,7 +77,7 @@ public class StereoManager : MonoBehaviour {
 			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
 
 			if(!hit.collider)
-				DrawStereoOnMouse ();
+				DrawStereoShadowOnMouse ();
 
 			if (Input.GetMouseButtonDown (0)) {
 				//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
@@ -108,7 +85,7 @@ public class StereoManager : MonoBehaviour {
 
 				if (hit.collider) {
 					selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
-				} else {
+				} else if (!spawningDisabled) {
 					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
 					float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
@@ -126,7 +103,8 @@ public class StereoManager : MonoBehaviour {
 	}
 
 	private Vector2 stereoPositionOnGrid;
-	private void DrawStereoOnMouse() {
+
+	private void DrawStereoShadowOnMouse() {
 		Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 		float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
 		float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
