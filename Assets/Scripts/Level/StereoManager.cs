@@ -28,12 +28,12 @@ public class Pulse {
 	}
 
 	public Pulse() {
-		this.radius = 1.5f * BeatMaster.beatSize;
+		this.radius = .5f * BeatMaster.beatSize;
 		this.speed = 0f;
 		this.strength = 0f;
 		this.beatsBetweenPulses = 0;
 		this.pulseColor = Color.white;
-		this.sfxName = ResourceNameAudioClip.Distorted1;
+		this.sfxName = ResourceLoader.GetRandomSFX();
 
 		this.lifeTime = 0f;
 	}
@@ -87,7 +87,8 @@ public class StereoManager : MonoBehaviour {
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
-		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, new Pulse());
+		Pulse pulse = new Pulse ();
+		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, pulse);
 		return stereoClone.GetComponent <Stereo> ();
 	}
 

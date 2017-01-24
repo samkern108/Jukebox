@@ -6,7 +6,7 @@ using System.IO;
 public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy, StereoTemplate, ColorPanel, Path, Spawner};
 public enum ResourceNameSprite {};
 public enum ResourceNameMusic {};
-public enum ResourceNameAudioClip {Distorted1, Horn1, Horn2, Horn3, Strum1, Strum2, Strum3, Strum4};
+public enum ResourceNameAudioClip {FSharp, G, BFlat};
 
 public class ResourceLoader : MonoBehaviour {
 
@@ -33,5 +33,12 @@ public class ResourceLoader : MonoBehaviour {
 	public static AudioClip LoadSFX(ResourceNameAudioClip name)
 	{
 		return Resources.Load <AudioClip> (pathToSFX + name);
+	}
+
+	public static ResourceNameAudioClip GetRandomSFX()
+	{
+		System.Array sfx = ResourceNameAudioClip.GetValues(typeof(ResourceNameAudioClip));
+
+		return (ResourceNameAudioClip)sfx.GetValue(Random.Range(0, sfx.Length));
 	}
 }
