@@ -34,6 +34,9 @@ UnityGenerated/
 Icon?
 ehthumbs.db
 [Tt]humbs.db
+
+# Ignored by Sam:
+Assets/Sprites/iDraw/
  
 # OS X only:
 .DS_Store

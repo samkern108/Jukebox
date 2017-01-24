@@ -10,14 +10,14 @@ public class PulseWave : MonoBehaviour {
 
 	private float elapsedTime = 0.0f;
 
-	public void Initialize(Pulse pulse) {
+	public void Initialize(Pulse pulse, int intensity) {
 		circle = GetComponent<CircleCollider2D> ();
 		line = GetComponent <LineRenderer>();
 
 		this.pulse = pulse;
 		this.transform.position = pulse.position;
 
-		circle.radius = this.pulse.radius - .1f;
+		circle.radius = (this.pulse.radius - .1f) * intensity;
 
 		lineColor = this.pulse.pulseColor;
 		lineColor.a = 0;

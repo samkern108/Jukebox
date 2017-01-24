@@ -94,31 +94,19 @@ public class StereoManager : MonoBehaviour {
 	private Stereo selectedStereo;
 
 	void Update () {
-		if (editStereoMode) {
-			if (Input.GetMouseButtonDown (0)) {
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI"));
-
-				if (!hit.collider) {
-					editStereoMode = false;
-					selectedStereo = null;
-					StereoEditorPanel.EditorModeOff ();
-				}
-			}
-		}
-		else if (placeStereoMode) {
+		if (!StereoEditorPanel.active) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
 
 			if(!hit.collider)
 				DrawStereoOnMouse ();
-			
+
 			if (Input.GetMouseButtonDown (0)) {
 				//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 				//RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
 
 				if (hit.collider) {
-					selectedStereo = hit.collider.gameObject.GetComponent<Stereo>();
+					selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
 				} else {
 					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
@@ -128,7 +116,6 @@ public class StereoManager : MonoBehaviour {
 					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
 				}
 				StereoEditorPanel.EditorModeOn (selectedStereo);
-				editStereoMode = true;
 			}
 		}
 	}
@@ -137,7 +124,6 @@ public class StereoManager : MonoBehaviour {
 		stereoShadow.SetActive (draw);
 	}
 
-	private int numPositions = 80;
 	private Vector2 stereoPositionOnGrid;
 	private void DrawStereoOnMouse() {
 		Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);

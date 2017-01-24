@@ -54,13 +54,14 @@ public class Stereo : MonoBehaviour {
 	public void Tick() {
 		if (deactivated)
 			return;
+
+		anim.SetTrigger ("Pulse");
 		
 		if (beatValues[beatCounter] != 0) {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
-			pulseWave.GetComponent<PulseWave> ().Initialize (pulse);
+			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beatCounter]);
 			pulseWave.transform.SetParent (transform);
 			//audio.Play ();
-			anim.SetTrigger ("Pulse");
 		}
 
 		beatCounter = (beatCounter + 1)%numBeats;
