@@ -35,8 +35,9 @@ Icon?
 ehthumbs.db
 [Tt]humbs.db
 
-# Ignored by Sam:
+# Ignored by Sam (because too expensive)
 Assets/Sprites/iDraw/
+Assets/Resources/Audio/
  
 # OS X only:
 .DS_Store
