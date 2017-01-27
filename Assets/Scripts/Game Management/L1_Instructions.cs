@@ -29,7 +29,7 @@ public class L1_Instructions : MonoBehaviour {
 			RectTransform circleTransform = circle.GetComponent<RectTransform>();
 			RectTransform CanvasRect = GetComponent<Canvas>().GetComponent<RectTransform>();
 
-			Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(BeatMaster.GetClosestGridCell(3, 1));
+			Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(BeatMaster.GetClosestGridCell(3, 3));
 			Vector2 WorldObject_ScreenPosition=new Vector2(
 				((ViewportPosition.x*CanvasRect.sizeDelta.x)-(CanvasRect.sizeDelta.x * 0.5f)),
 				((ViewportPosition.y*CanvasRect.sizeDelta.y)-(CanvasRect.sizeDelta.y * 0.5f)));

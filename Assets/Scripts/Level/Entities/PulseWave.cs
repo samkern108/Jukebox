@@ -17,12 +17,17 @@ public class PulseWave : MonoBehaviour {
 		this.pulse = pulse;
 		this.transform.position = pulse.position;
 
-		circle.radius = (this.pulse.radius - .1f) * intensity;
+		circle.radius = (intensity + 1) * (BeatMaster.beatSize/2);
 
 		lineColor = this.pulse.pulseColor;
 		lineColor.a = 0;
 		line.startColor = lineColor;
 		line.endColor = lineColor;
+
+		float width = BeatMaster.beatSize * 0.1f + (intensity + 1)/8;
+
+		line.startWidth = width;
+		line.endWidth = width;
 	}
 
 	private int numPositions = 80;
@@ -47,21 +52,6 @@ public class PulseWave : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
-
-
-	//TODO this is for growing the pulse out of the center
-
-	/*
-	public void Update() {
-		elapsedTime += Time.deltaTime;
-		circle.radius += Time.deltaTime * this.pulse.speed;
-
-		line.DrawCircle (circle.radius, numPositions);
-	
-		if(circle.radius >= pulse.radius) {
-			Destroy(this.gameObject);
-		}
-	}*/
 
 	public void OnTriggerEnter2D(Collider2D collider) {
 		collider.GetComponent <Enemy>().ReactToPulse(pulse);

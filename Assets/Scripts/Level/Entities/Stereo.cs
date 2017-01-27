@@ -6,11 +6,13 @@ using MovementEffects;
 public class Stereo : MonoBehaviour {
 
 	private Pulse pulse;
+	private Animator anim;
+	private LineRenderer line;
+
 	private AudioSource audioSource;
 	private AudioDistortionFilter audioDistortionFilter;
 	private AudioLowPassFilter audioLowPassFilter;
-	private Animator anim;
-	private LineRenderer line;
+	private AudioClip[] audioClips = new AudioClip[3];
 
 	public int[] beatValues;
 	private int beatCounter = 0;
@@ -24,14 +26,25 @@ public class Stereo : MonoBehaviour {
 		audioDistortionFilter = GetComponent <AudioDistortionFilter>();
 
 		anim = GetComponentInChildren <Animator>();
-		line = GetComponentInChildren<LineRenderer> ();
+		line = GetComponentInChildren <LineRenderer> ();
 
-		line.startColor = pulse.pulseColor;
-		line.endColor = pulse.pulseColor;
+		SetColor (pulse.pulseColor);
+
+		transform.localScale *= (BeatMaster.beatSize/3);
+
+		float width = BeatMaster.beatSize * 0.1f;
+
+		line.startWidth = width;
+		line.endWidth = width;
 
 		beatValues = new int[numBeats];
+		for (int i = 0; i < numBeats; i++) {
+			beatValues [i] = 0;
+		}
 
-		audioSource.clip = ResourceLoader.LoadSFX (pulse.sfxName);
+		for (int i = 0; i < audioClips.Length; i++) {
+			audioClips[i] = ResourceLoader.LoadSFX (pulse.sfxName + (i + 3));
+		}
 
 		GetComponent <BoxCollider2D>().size = new Vector2(BeatMaster.beatSize, BeatMaster.beatSize);
 
@@ -45,11 +58,14 @@ public class Stereo : MonoBehaviour {
 			deactivated = true;
 		} else {
 			deactivated = false;
-			pulse.pulseColor = color;
-		
-			line.startColor = pulse.pulseColor;
-			line.endColor = pulse.pulseColor;
 		}
+
+		color.a = .6f;
+		if(pulse != null) pulse.pulseColor = color;
+		line.startColor = color;
+
+		color.a = .3f;
+		line.endColor = color;
 	}
 
 	public void SetBeatValue(int beat, int value) {
@@ -66,6 +82,7 @@ public class Stereo : MonoBehaviour {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
 			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beatCounter]);
 			pulseWave.transform.SetParent (transform);
+			audioSource.clip = audioClips[beatValues[beatCounter] - 1];
 			PlayAudio (beatValues[beatCounter]);
 		}
 

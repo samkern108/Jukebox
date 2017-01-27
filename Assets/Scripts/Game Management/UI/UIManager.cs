@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	{
 		self = this;
 		menu = transform.FindChild ("Menu").gameObject;
+		GameObject.Find ("EnemiesRemaining").GetComponent<Text>().text = "?";
 		IOManager.Initialize ();
 	}
 

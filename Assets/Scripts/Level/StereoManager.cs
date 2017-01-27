@@ -16,7 +16,7 @@ public class Pulse {
 	public float lifeTime;
 
 	public Pulse(SFXInstrument instr) {
-		this.radius = .5f * BeatMaster.beatSize;
+		this.radius = 0;
 		this.speed = 0f;
 		this.strength = 0f;
 		this.beatsBetweenPulses = 0;
@@ -28,7 +28,7 @@ public class Pulse {
 
 		this.sfxName = substring[substring.Length - 2] + "/" + substring[substring.Length - 1];
 		//removing .wav extension
-		this.sfxName = sfxName.Substring (0, sfxName.Length - 4);
+		this.sfxName = sfxName.Substring (0, sfxName.Length - 5);
 		Debug.Log (this.sfxName);
 
 		this.lifeTime = 0f;
@@ -42,9 +42,6 @@ public class StereoManager : MonoBehaviour {
 	private static List<Stereo> stereos = new List<Stereo>();
 
 	public static GameObject p_pulseWave;
-	private static GameObject p_stereoShadow;
-	private static GameObject stereoShadow;
-	private static GameObject stereoShadowRadius;
 
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
@@ -55,24 +52,15 @@ public class StereoManager : MonoBehaviour {
 	public void Awake() {
 		self = this;
 		p_pulseWave = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWave);
-		p_stereoShadow = ResourceLoader.LoadPrefab (ResourceNamePrefab.StereoShadow);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
-
-		stereoShadow = Instantiate (p_stereoShadow);
-		stereoShadowRadius = stereoShadow.transform.FindChild ("Radius").gameObject;
-
-		stereoLineRenderer = stereoShadow.GetComponent <LineRenderer> ();
-		stereoRadiusLineRenderer = stereoShadowRadius.GetComponent <LineRenderer> ();
-
-		DrawStereoShadow (false);
 	}
 
 	public static Stereo InstantiateStereo(Vector2 clickPosition) {
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
-		Pulse pulse = new Pulse (SFXInstrument.Guitar);
+		Pulse pulse = new Pulse (SFXInstrument.Synth);
 
 		Stereo stereo = stereoClone.GetComponent <Stereo> ();
 		stereo.Initialize(clickPosition, pulse);
@@ -83,43 +71,38 @@ public class StereoManager : MonoBehaviour {
 	private Stereo selectedStereo;
 
 	void Update () {
-		if (!StereoEditorPanel.active) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
+		if (!Input.GetMouseButtonDown (0))
+			return;
 
-			if(!hit.collider)
-				DrawStereoShadowOnMouse ();
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI") | 1 << LayerMask.NameToLayer ("Stereo"));
+		
+		if (StereoEditorPanel.active) {
+			if (!hit.collider)
+				StereoEditorPanel.EditorModeOff ();
 
-			if (Input.GetMouseButtonDown (0)) {
-				//Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				//RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
+			else if (hit.collider.gameObject.layer == LayerMask.NameToLayer ("Stereo")) {
+				Stereo stereo = hit.collider.gameObject.GetComponent <Stereo> ();
+				StereoEditorPanel.EditorModeOn (stereo);
+			} 
 
-				if (hit.collider) {
-					selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
-					StereoEditorPanel.EditorModeOn (selectedStereo);
-				} else if (!spawningDisabled) {
-					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
-					float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
-					stereoPositionOnGrid = new Vector2(x, y);*/
+			else if (hit.collider.gameObject.layer != LayerMask.NameToLayer ("UI"))
+				StereoEditorPanel.EditorModeOff ();
+		} 
+		else {
 
-					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
-				}
+			if (hit.collider) {
+				selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
+				StereoEditorPanel.EditorModeOn (selectedStereo);
+			} 
+
+			else if (!spawningDisabled) {
+				Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+				float x = BeatMaster.beatSize * Mathf.Floor (mousePos.x / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
+				float y = BeatMaster.beatSize * Mathf.Floor (mousePos.y / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
+
+				selectedStereo = InstantiateStereo (new Vector2 (x, y));
 			}
 		}
-	}
-
-	public void DrawStereoShadow(bool draw) {
-		stereoShadow.SetActive (draw);
-	}
-
-	private Vector2 stereoPositionOnGrid;
-
-	private void DrawStereoShadowOnMouse() {
-		Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
-		float y = BeatMaster.beatSize * Mathf.Floor(mousePos.y/BeatMaster.beatSize) + BeatMaster.beatSize/2;
-		stereoPositionOnGrid = new Vector2(x, y);
-		stereoShadow.transform.position = stereoPositionOnGrid;
 	}
 }

@@ -5,11 +5,13 @@ using UnityEngine;
 public class LevelMaster : MonoBehaviour {
 
 	public static int enemiesRemaining, livesRemaining;
+	public static LevelMaster self;
 	private LevelJSON level;
 
 	public static bool paused = false;
 
 	void Start () {
+		self = this;
 		level = IOManager.LoadLevel ("One");
 		livesRemaining = level.lives;
 		UIManager.self.SetLivesRemainingUI (level.lives);
@@ -54,12 +56,10 @@ public class LevelMaster : MonoBehaviour {
 		} else {
 			Time.timeScale = 1f;
 		}
-
-		StereoManager.self.DrawStereoShadow (!pause);
 	}
 
 	public static void RestartLevel() {
-		Debug.Log ("Restarting.");
+		self.BroadcastMessage ("ResetLevel");
 	}
 
 	public static void QuitToMenu() {
