@@ -58,6 +58,14 @@ public class BeatMaster : MonoBehaviour {
 		}
 	}
 
+	public static Vector3 GetClosestGridCell(int x, int y) {
+		
+		float xPos = (x * BeatMaster.beatSize) + BeatMaster.beatSize/2;
+		float yPos = (y * BeatMaster.beatSize) + BeatMaster.beatSize/2;
+
+		return new Vector2(xPos, yPos);
+	}
+
 	void FixedUpdate() {
 		if(gameStarted) {
 

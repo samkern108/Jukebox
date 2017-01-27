@@ -6,14 +6,15 @@ using System.IO;
 public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWave, Enemy, StereoTemplate, ColorPanel, Path, Spawner};
 public enum ResourceNameSprite {};
 public enum ResourceNameMusic {};
-public enum ResourceNameAudioClip {FSharp, G, BFlat};
+public enum SFXInstrument { Synth, Guitar, Thrash };
 
 public class ResourceLoader : MonoBehaviour {
 
-	private static string pathToSFX = "Audio/SFX/";
 	private static string pathToMusic = "Audio/Music/";
 	private static string pathToPrefabs = "Prefabs/";
 	private static string pathToSprites = "Sprites/";
+
+	private static string[] fileNamesAudio;
 
 	public static GameObject LoadPrefab(ResourceNamePrefab prefabName)
 	{
@@ -30,15 +31,32 @@ public class ResourceLoader : MonoBehaviour {
 		return Resources.Load <AudioClip> (pathToMusic + name);
 	}
 
-	public static AudioClip LoadSFX(ResourceNameAudioClip name)
+	private static string pathToSFX = "Audio/SFX/";
+	private static string[] sfxThrash = new string[0], sfxGuitar = new string[0], sfxSynth = new string[0];
+
+	public static AudioClip LoadSFX(string name)
 	{
 		return Resources.Load <AudioClip> (pathToSFX + name);
 	}
 
-	public static ResourceNameAudioClip GetRandomSFX()
+	// Note: SFX and Audio are NOT under source control (too expensive).
+	public static string GetRandomSFXName(SFXInstrument instr)
 	{
-		System.Array sfx = ResourceNameAudioClip.GetValues(typeof(ResourceNameAudioClip));
+		if (sfxThrash.Length == 0) {
+			sfxGuitar = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "Guitar", "*.wav", SearchOption.AllDirectories);
+			sfxSynth = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "Synth", "*.wav", SearchOption.AllDirectories);
+			sfxThrash = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "Thrash", "*.wav", SearchOption.AllDirectories);
+		}
 
-		return (ResourceNameAudioClip)sfx.GetValue(Random.Range(0, sfx.Length));
+		switch(instr) {
+		case SFXInstrument.Synth:
+			return sfxSynth [Random.Range (0, sfxSynth.Length)];
+		case SFXInstrument.Guitar:
+			return sfxGuitar [Random.Range (0, sfxGuitar.Length)];
+		case SFXInstrument.Thrash:
+			return sfxThrash [Random.Range (0, sfxThrash.Length)];
+		}
+
+		return "unknown";
 	}
 }

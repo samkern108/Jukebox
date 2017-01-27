@@ -71,6 +71,8 @@ public class StereoEditorPanel : MonoBehaviour {
 
 	public static void EditorModeOn(Stereo stereo)
 	{
+		Debug.Log ("EDITORMODEON: " + stereo.name);
+
 		activeStereo = stereo;
 
 		for(int i = 0; i < sliders.Length; i++) {

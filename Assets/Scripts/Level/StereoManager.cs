@@ -9,19 +9,27 @@ public class Pulse {
 	public float strength;
 	public int beatsBetweenPulses;
 	public Color pulseColor;
-	public ResourceNameAudioClip sfxName;
+	public string sfxName;
 
 	// Used by Dot
 	public Vector2 position;
 	public float lifeTime;
 
-	public Pulse() {
+	public Pulse(SFXInstrument instr) {
 		this.radius = .5f * BeatMaster.beatSize;
 		this.speed = 0f;
 		this.strength = 0f;
 		this.beatsBetweenPulses = 0;
 		this.pulseColor = Color.white;
-		this.sfxName = ResourceLoader.GetRandomSFX();
+		string name = ResourceLoader.GetRandomSFXName(instr);
+
+		// TODO(samkern): Probably should make this less janky.
+		string[] substring = name.Split ('/');
+
+		this.sfxName = substring[substring.Length - 2] + "/" + substring[substring.Length - 1];
+		//removing .wav extension
+		this.sfxName = sfxName.Substring (0, sfxName.Length - 4);
+		Debug.Log (this.sfxName);
 
 		this.lifeTime = 0f;
 	}
@@ -64,9 +72,12 @@ public class StereoManager : MonoBehaviour {
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
-		Pulse pulse = new Pulse ();
-		stereoClone.GetComponent <Stereo>().Initialize(clickPosition, pulse);
-		return stereoClone.GetComponent <Stereo> ();
+		Pulse pulse = new Pulse (SFXInstrument.Guitar);
+
+		Stereo stereo = stereoClone.GetComponent <Stereo> ();
+		stereo.Initialize(clickPosition, pulse);
+		StereoEditorPanel.EditorModeOn (stereo);
+		return stereo;
 	}
 
 	private Stereo selectedStereo;
@@ -85,6 +96,7 @@ public class StereoManager : MonoBehaviour {
 
 				if (hit.collider) {
 					selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
+					StereoEditorPanel.EditorModeOn (selectedStereo);
 				} else if (!spawningDisabled) {
 					/*Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 					float x = BeatMaster.beatSize * Mathf.Floor(mousePos.x/BeatMaster.beatSize) + BeatMaster.beatSize/2;
@@ -93,7 +105,6 @@ public class StereoManager : MonoBehaviour {
 
 					selectedStereo = InstantiateStereo (stereoPositionOnGrid);
 				}
-				StereoEditorPanel.EditorModeOn (selectedStereo);
 			}
 		}
 	}

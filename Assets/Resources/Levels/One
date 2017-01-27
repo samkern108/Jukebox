@@ -10,8 +10,8 @@
 		"spawner": {"numEnemies":20,"beatsBetweenSpawn":0,"startColor":[0,0,0]},
 		"points": [
 			[0, 0],
-			[3, 0],
-			[3, 2],
+			[2, 0],
+			[2, 2],
 			[5, 2],
 			[5, -2],
 			[8, -2],

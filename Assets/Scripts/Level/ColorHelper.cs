@@ -16,8 +16,6 @@ public class ColorHelper : MonoBehaviour {
 		newColor.b = Mathf.Clamp(one.b + two.b, 0, 1);
 		newColor.a = 1;
 
-		Debug.Log (newColor);
-
 		return ConvertColor (newColor);
 	}
 
