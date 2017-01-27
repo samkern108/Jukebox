@@ -55,14 +55,18 @@ public class StereoManager : MonoBehaviour {
 		stereoParent = GameObject.Find ("Stereos").transform;
 	}
 
-	public static Stereo InstantiateStereo(Vector2 clickPosition) {
+	public static Stereo InstantiateStereo(Vector2 position) 
+	{
+		float x = BeatMaster.beatSize * Mathf.Floor (position.x / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
+		float y = BeatMaster.beatSize * Mathf.Floor (position.y / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
+
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
 		Pulse pulse = new Pulse (SFXInstrument.Synth);
 
 		Stereo stereo = stereoClone.GetComponent <Stereo> ();
-		stereo.Initialize(clickPosition, pulse);
+		stereo.Initialize(new Vector2(x, y), pulse);
 		StereoEditorPanel.EditorModeOn (stereo);
 		return stereo;
 	}
@@ -89,7 +93,6 @@ public class StereoManager : MonoBehaviour {
 				StereoEditorPanel.EditorModeOff ();
 		} 
 		else {
-
 			if (hit.collider) {
 				selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
 				StereoEditorPanel.EditorModeOn (selectedStereo);
@@ -97,10 +100,7 @@ public class StereoManager : MonoBehaviour {
 
 			else if (!spawningDisabled) {
 				Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-				float x = BeatMaster.beatSize * Mathf.Floor (mousePos.x / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
-				float y = BeatMaster.beatSize * Mathf.Floor (mousePos.y / BeatMaster.beatSize) + BeatMaster.beatSize / 2;
-
-				selectedStereo = InstantiateStereo (new Vector2 (x, y));
+				selectedStereo = InstantiateStereo (mousePos);
 			}
 		}
 	}

@@ -46,7 +46,6 @@ public class L1_Instructions : MonoBehaviour {
 			Invoke ("NextStage", 4f);
 			break;
 		case 2:
-			StereoManager.spawningDisabled = false;
 			arrow.SetActive (true);
 			spacebar.SetActive (true);
 			break;
@@ -55,9 +54,12 @@ public class L1_Instructions : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			BeatMaster.gameStarted = true;
-			Destroy (this.gameObject);
+		if(stage == 3) { 
+			if (Input.GetKeyDown (KeyCode.Space)) {
+				StereoManager.spawningDisabled = false;
+				BeatMaster.gameStarted = true;
+				Destroy (this.gameObject);
+			}
 		}
 	}
 }
