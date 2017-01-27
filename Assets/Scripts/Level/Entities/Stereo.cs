@@ -14,13 +14,17 @@ public class Stereo : MonoBehaviour {
 	private AudioLowPassFilter audioLowPassFilter;
 	private AudioClip[] audioClips = new AudioClip[3];
 
-	public int[] beatValues;
 	private int beatCounter = 0;
 	private int numBeats = 4;
+	public int[] beatValues;
 
 	private bool deactivated = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
+		name = "Stereo" + pulse.sfxName;
+
+		beatValues = new int[numBeats];
+
 		audioSource = GetComponent <AudioSource>();
 		audioLowPassFilter = GetComponent <AudioLowPassFilter>();
 		audioDistortionFilter = GetComponent <AudioDistortionFilter>();
@@ -37,11 +41,6 @@ public class Stereo : MonoBehaviour {
 		line.startWidth = width;
 		line.endWidth = width;
 
-		beatValues = new int[numBeats];
-		for (int i = 0; i < numBeats; i++) {
-			beatValues [i] = 0;
-		}
-
 		for (int i = 0; i < audioClips.Length; i++) {
 			audioClips[i] = ResourceLoader.LoadSFX (pulse.sfxName + (i + 3));
 		}
@@ -54,11 +53,10 @@ public class Stereo : MonoBehaviour {
 	}
 
 	public void SetColor(Color color) {
-		if (color == Color.white) {
+		if (color == Color.white)
 			deactivated = true;
-		} else {
+		else
 			deactivated = false;
-		}
 
 		color.a = .6f;
 		if(pulse != null) pulse.pulseColor = color;
@@ -90,7 +88,7 @@ public class Stereo : MonoBehaviour {
 	}
 
 	public void PlayAudio(int beatValue) {
-		audioSource.volume = .55f + (beatValue * .15f);
+		audioSource.volume = .60f + (beatValue * .10f);
 		audioLowPassFilter.cutoffFrequency = beatValue * 2000;
 		audioDistortionFilter.distortionLevel = (beatValue * .25f);
 		audioSource.Play ();

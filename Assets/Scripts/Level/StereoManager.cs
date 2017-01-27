@@ -71,37 +71,34 @@ public class StereoManager : MonoBehaviour {
 		return stereo;
 	}
 
-	private Stereo selectedStereo;
+	public static Stereo selectedStereo;
 
 	void Update () {
 		if (!Input.GetMouseButtonDown (0))
 			return;
 
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI") | 1 << LayerMask.NameToLayer ("Stereo"));
-		
+		RaycastHit2D hitStereo = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("Stereo"));
+
+		// If we touched a stereo, turn editor mode on and return.
+		if (hitStereo.collider) {
+			selectedStereo = hitStereo.collider.gameObject.GetComponent<Stereo> ();
+			StereoEditorPanel.EditorModeOn (selectedStereo);
+			return;
+		} 
+
+		// If we did not touch a stereo...
 		if (StereoEditorPanel.active) {
-			if (!hit.collider)
-				StereoEditorPanel.EditorModeOff ();
+			RaycastHit2D hitUI = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI"));
 
-			else if (hit.collider.gameObject.layer == LayerMask.NameToLayer ("Stereo")) {
-				Stereo stereo = hit.collider.gameObject.GetComponent <Stereo> ();
-				StereoEditorPanel.EditorModeOn (stereo);
-			} 
-
-			else if (hit.collider.gameObject.layer != LayerMask.NameToLayer ("UI"))
+			//If we did not touch a UI element, turn edit mode off.
+			if (!hitUI.collider)
 				StereoEditorPanel.EditorModeOff ();
 		} 
-		else {
-			if (hit.collider) {
-				selectedStereo = hit.collider.gameObject.GetComponent<Stereo> ();
-				StereoEditorPanel.EditorModeOn (selectedStereo);
-			} 
-
-			else if (!spawningDisabled) {
-				Vector2 mousePos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
-				selectedStereo = InstantiateStereo (mousePos);
-			}
+		// If we aren't in edit mode and we can spawn a stereo, spawn it.
+		else if (!spawningDisabled) {
+			selectedStereo = InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
+			StereoEditorPanel.EditorModeOn (selectedStereo);
 		}
 	}
 }

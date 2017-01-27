@@ -8,7 +8,6 @@ public class StereoEditorPanel : MonoBehaviour {
 	public static bool active = false;
 
 	private static GameObject p_ColorPanel;
-	private static Stereo activeStereo;
 	private static GameObject controlsPanel;
 
 	private static Slider[] sliders;
@@ -51,10 +50,8 @@ public class StereoEditorPanel : MonoBehaviour {
 
 	public static void EditorModeOn(Stereo stereo)
 	{
-		activeStereo = stereo;
-
 		for(int i = 0; i < sliders.Length; i++) {
-			sliders [i].value = stereo.beatValues [i];
+			sliders [i].Set(stereo.beatValues [i], false);
 		}
 	
 		canvas.transform.position = stereo.transform.position;
@@ -66,18 +63,24 @@ public class StereoEditorPanel : MonoBehaviour {
 	public static void EditorModeOff()
 	{
 		controlsPanel.SetActive (false);
+		for(int i = 0; i < sliders.Length; i++) {
+			sliders [i].Set(0, false);
+		}
 		active = false;
 	}
 
 	public static void ChangeStereoColor(Color color)
 	{
-		activeStereo.SetColor (color);
+		StereoManager.selectedStereo.SetColor (color);
 	}
 
+	// This should ONLY update when dragged... not when changed programmatically.
 	public static void UpdateStereoBeat()
 	{
-		for (int i = 0; i < sliders.Length; i++) {
-			activeStereo.SetBeatValue (i, (int)(sliders [i].value));
-		}
+		if (StereoManager.selectedStereo == null)
+			return;
+
+		for (int i = 0; i < sliders.Length; i++)
+			StereoManager.selectedStereo.SetBeatValue (i, (int)(sliders [i].value));
 	}
 }
