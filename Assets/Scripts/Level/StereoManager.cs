@@ -29,7 +29,6 @@ public class Pulse {
 		this.sfxName = substring[substring.Length - 2] + "/" + substring[substring.Length - 1];
 		//removing .wav extension
 		this.sfxName = sfxName.Substring (0, sfxName.Length - 5);
-		Debug.Log (this.sfxName);
 
 		this.lifeTime = 0f;
 	}

@@ -28,26 +28,6 @@ public class StereoEditorPanel : MonoBehaviour {
 		controlsPanel.SetActive (false);
 	}
 
-	public void Update()
-	{
-		if (Input.GetMouseButtonDown (0)) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit2D hit = Physics2D.Raycast (ray.origin, ray.direction, Mathf.Infinity, 1 << LayerMask.NameToLayer ("UI") | 1 << LayerMask.NameToLayer ("Stereo"));
-
-			if(!hit.collider) {
-				StereoEditorPanel.EditorModeOff ();
-			}
-			else if (hit.collider.gameObject.layer == LayerMask.NameToLayer ("Stereo")) {
-				Stereo stereo = hit.collider.gameObject.GetComponent <Stereo> ();
-				if (activeStereo != stereo) {
-					EditorModeOn (stereo);
-				}
-			} else if (hit.collider.gameObject.layer != LayerMask.NameToLayer ("UI")) {
-				StereoEditorPanel.EditorModeOff ();
-			}
-		}
-	}
-
 	public static void InitializeStereoColors (float[][] stereoColors)
 	{
 		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
@@ -71,8 +51,6 @@ public class StereoEditorPanel : MonoBehaviour {
 
 	public static void EditorModeOn(Stereo stereo)
 	{
-		Debug.Log ("EDITORMODEON: " + stereo.name);
-
 		activeStereo = stereo;
 
 		for(int i = 0; i < sliders.Length; i++) {
