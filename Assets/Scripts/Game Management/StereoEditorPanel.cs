@@ -9,6 +9,7 @@ public class StereoEditorPanel : MonoBehaviour {
 
 	private static GameObject p_ColorPanel;
 	private static GameObject controlsPanel;
+	private static Transform highlight;
 
 	private static Slider[] sliders;
 
@@ -17,6 +18,7 @@ public class StereoEditorPanel : MonoBehaviour {
 	public void Awake()
 	{
 		controlsPanel = transform.Find ("Controls").gameObject;
+		highlight = controlsPanel.transform.Find ("Highlight");
 		canvas = this.gameObject.GetComponent<Canvas>();
 		sliders = GetComponentsInChildren<Slider>();
 
@@ -85,5 +87,9 @@ public class StereoEditorPanel : MonoBehaviour {
 
 		for (int i = 0; i < sliders.Length; i++)
 			StereoManager.selectedStereo.SetBeatValue (i, (int)(sliders [i].value));
+	}
+
+	public void Tick(int beat) {
+		highlight.position = sliders [beat].transform.position;
 	}
 }

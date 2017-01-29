@@ -13,6 +13,9 @@ public class BeatMaster : MonoBehaviour {
 	private static float timer = 0.0f;
 	public static float beatSize;
 
+	public static int beat = 0;
+	public static int beatsPerMeasure = 4;
+
 	//SLOPPY! Instead, set the beat game object to be active when the game starts.
 	public static bool gameStarted = false;
 
@@ -77,8 +80,10 @@ public class BeatMaster : MonoBehaviour {
 		}
 	}
 		
+	//TODO(samkern): There's something fishy going on. It looks like that "Invoke" gets called pretty frequently.
 	private void SendTick() {
-		BroadcastMessage("Tick");
+		BroadcastMessage("Tick", beat);
 		metronome.Play ();
+		beat = (beat + 1) % beatsPerMeasure;
 	}
 }

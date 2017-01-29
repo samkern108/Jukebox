@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour {
 		LevelMaster.enemiesRemaining += spawnTotal;
 	}
 
-	public void Tick() {
+	public void Tick(int beat) {
 		if (countdown <= 0) {
 			if (spawned < spawnTotal) {
 				GameObject enemyInstance = Instantiate (enemy);

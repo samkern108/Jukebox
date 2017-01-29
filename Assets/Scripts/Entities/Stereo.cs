@@ -14,8 +14,6 @@ public class Stereo : MonoBehaviour {
 	private AudioLowPassFilter audioLowPassFilter;
 	private AudioClip[] audioClips = new AudioClip[3];
 
-	private int beatCounter = 0;
-	private int numBeats = 4;
 	public int[] beatValues;
 
 	private bool deactivated = true;
@@ -23,7 +21,7 @@ public class Stereo : MonoBehaviour {
 	public void Initialize(Vector2 position, Pulse pulse) {
 		name = "Stereo" + pulse.sfxName;
 
-		beatValues = new int[numBeats];
+		beatValues = new int[BeatMaster.beatsPerMeasure];
 
 		audioSource = GetComponent <AudioSource>();
 		audioLowPassFilter = GetComponent <AudioLowPassFilter>();
@@ -70,21 +68,19 @@ public class Stereo : MonoBehaviour {
 		beatValues [beat] = value;
 	}
 
-	public void Tick() {
+	public void Tick(int beat) {
 		if (deactivated)
 			return;
 
 		anim.SetTrigger ("Pulse");
 		
-		if (beatValues[beatCounter] != 0) {
+		if (beatValues[beat] != 0) {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
-			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beatCounter]);
+			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beat]);
 			pulseWave.transform.SetParent (transform);
-			audioSource.clip = audioClips[beatValues[beatCounter] - 1];
-			PlayAudio (beatValues[beatCounter]);
+			audioSource.clip = audioClips[beatValues[beat] - 1];
+			PlayAudio (beatValues[beat]);
 		}
-
-		beatCounter = (beatCounter + 1)%numBeats;
 	}
 
 	public void PlayAudio(int beatValue) {
