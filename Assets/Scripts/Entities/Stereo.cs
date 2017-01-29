@@ -19,8 +19,6 @@ public class Stereo : MonoBehaviour {
 	private bool deactivated = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
-		name = "Stereo" + pulse.sfxName;
-
 		beatValues = new int[BeatMaster.beatsPerMeasure];
 
 		audioSource = GetComponent <AudioSource>();
@@ -30,24 +28,20 @@ public class Stereo : MonoBehaviour {
 		anim = GetComponentInChildren <Animator>();
 		line = GetComponentInChildren <LineRenderer> ();
 
+		this.pulse = pulse;
+
 		SetColor (pulse.pulseColor);
 
 		transform.localScale *= (BeatMaster.beatSize/3);
+		this.transform.position = position;
+		this.pulse.position = position;
 
 		float width = BeatMaster.beatSize * 0.1f;
 
 		line.startWidth = width;
 		line.endWidth = width;
 
-		for (int i = 0; i < audioClips.Length; i++) {
-			audioClips[i] = ResourceLoader.LoadSFX (pulse.sfxName + (i + 3));
-		}
-
 		GetComponent <BoxCollider2D>().size = new Vector2(BeatMaster.beatSize, BeatMaster.beatSize);
-
-		this.transform.position = position;
-		this.pulse = pulse;
-		this.pulse.position = position;
 	}
 
 	public void SetColor(Color color) {
@@ -62,6 +56,14 @@ public class Stereo : MonoBehaviour {
 
 		color.a = .3f;
 		line.endColor = color;
+
+		// Changing the color of the pulse reassigns the sound effect.
+		pulse.ChangeColor (color);
+		name = "Stereo" + pulse.sfxName;
+
+		for (int i = 0; i < audioClips.Length; i++) {
+			audioClips[i] = ResourceLoader.LoadSFX (pulse.sfxName + i);
+		}
 	}
 
 	public void SetBeatValue(int beat, int value) {

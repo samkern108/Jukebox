@@ -45,7 +45,7 @@ public class ResourceLoader : MonoBehaviour {
 		if (sfxThrash.Length == 0) {
 			sfxGuitar = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "GuitarNice1", "*.wav", SearchOption.AllDirectories);
 			sfxSynth = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "SynthNice1", "*.wav", SearchOption.AllDirectories);
-			sfxThrash = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "Thrash", "*.wav", SearchOption.AllDirectories);
+			sfxThrash = System.IO.Directory.GetFiles (Application.dataPath + "/Resources/" + pathToSFX + "ThrashNice1", "*.wav", SearchOption.AllDirectories);
 		}
 
 		switch(instr) {
