@@ -39,9 +39,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	void Update () {
-		if (moving) {
+		if (moving)
 			MoveAlongPath ();
-		}
 	}
 
 	private void MoveAlongPath() {

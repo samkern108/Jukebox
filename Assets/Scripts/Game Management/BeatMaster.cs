@@ -5,6 +5,7 @@ using MovementEffects;
 
 public class BeatMaster : MonoBehaviour {
 
+	//TODO(samkern): Change this to BPM.
 	public static float timeBetweenBeats = 1.0f;
 	public static int beatsAcrossWidth;
 	public static int beatsAcrossHeight;

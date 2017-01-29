@@ -63,10 +63,14 @@ public class StereoManager : MonoBehaviour {
 		GameObject p_stereo = ResourceLoader.LoadPrefab (ResourceNamePrefab.Stereo);
 		GameObject stereoClone = Instantiate (p_stereo);
 		stereoClone.transform.SetParent (stereoParent);
-		Pulse pulse = new Pulse (SFXInstrument.Synth);
-
+	
 		Stereo stereo = stereoClone.GetComponent <Stereo> ();
+
+		Pulse pulse = new Pulse (SFXInstrument.Synth);
 		stereo.Initialize(new Vector2(x, y), pulse);
+
+		Debug.Log (stereo);
+
 		StereoEditorPanel.EditorModeOn (stereo);
 		return stereo;
 	}
