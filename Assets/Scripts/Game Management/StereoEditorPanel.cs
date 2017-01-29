@@ -31,10 +31,11 @@ public class StereoEditorPanel : MonoBehaviour {
 	{
 		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
 
-		Color c;
-		GameObject colorPanel;
 		float theta = Mathf.PI/2;
+
 		foreach (float[] color in stereoColors) {
+			Color c;
+			GameObject colorPanel;
 			c = new Color (color[0], color[1], color[2], 1);
 
 			colorPanel = Instantiate (p_ColorPanel);
@@ -42,6 +43,8 @@ public class StereoEditorPanel : MonoBehaviour {
 
 			colorPanel.transform.SetParent (controlsPanel.transform, false);
 			colorPanel.transform.position = new Vector2 (3 * Mathf.Cos(theta), 3 * Mathf.Sin(theta));
+			colorPanel.transform.Rotate (new Vector3(0, 0, (theta - Mathf.PI/2) * (180/Mathf.PI)));
+
 			theta += ((2 * Mathf.PI) / stereoColors.Length);
 
 			colorPanel.GetComponent<Button>().onClick.AddListener(() => { ChangeStereoColor(c); }); 

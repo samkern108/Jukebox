@@ -8,12 +8,14 @@ public class LevelMaster : MonoBehaviour {
 	public static LevelMaster self;
 	private LevelJSON level;
 
+	public static string levelToLoad = "Two";
+
 	public static bool paused = false;
 
 	void Start () {
 		self = this;
 		IOManager.Initialize ();
-		level = IOManager.LoadLevel ("One");
+		level = IOManager.LoadLevel (levelToLoad);
 		livesRemaining = level.lives;
 		UIManager.self.SetLivesRemainingUI (level.lives);
 		BeatMaster.InitializeBeat (level.grid);
