@@ -69,8 +69,7 @@ public class StereoManager : MonoBehaviour {
 		Pulse pulse = new Pulse (SFXInstrument.Synth);
 		stereo.Initialize(new Vector2(x, y), pulse);
 
-		Debug.Log (stereo);
-
+		selectedStereo = stereo;
 		StereoEditorPanel.EditorModeOn (stereo);
 		return stereo;
 	}
