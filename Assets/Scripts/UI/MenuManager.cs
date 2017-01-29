@@ -16,7 +16,6 @@ public class MenuManager : MonoBehaviour {
 
 	public void AdjustSFXVolume(float volume)
 	{
-		SFXManager.volume = volume;
 	}
 
 	public void ContinueLevel()
