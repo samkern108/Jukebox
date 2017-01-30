@@ -28,6 +28,8 @@ public class LevelMaster : MonoBehaviour {
 			path.InitializePath (pathJSON);
 			path.transform.position = Vector3.zero;
 		}
+
+		SendPauseNotification (true);
 	}
 
 	public static void EnemyDied() {
@@ -45,27 +47,24 @@ public class LevelMaster : MonoBehaviour {
 
 	public static void GameOver() {
 		UIManager.self.ShowDefeatPanel ();
+		SendPauseNotification (true);
 	}
 
 	public static void Victory() {
 		UIManager.self.ShowVictoryPanel ();
-	}
-
-	public static void PauseGame(bool pause)
-	{
-		paused = pause;
-		if (pause) {
-			Time.timeScale = 0f;
-		} else {
-			Time.timeScale = 1f;
-		}
-	}
-
-	public static void RestartLevel() {
-		self.BroadcastMessage ("ResetLevel");
+		SendPauseNotification (true);
 	}
 
 	public static void QuitToMenu() {
 		Application.Quit ();
+	}
+
+	public static void SendRestartNotification() {
+		self.BroadcastMessage ("ResetLevel");
+	}
+
+	public static void SendPauseNotification(bool pause) {
+		paused = pause;
+		self.BroadcastMessage ("Pause", pause);
 	}
 }

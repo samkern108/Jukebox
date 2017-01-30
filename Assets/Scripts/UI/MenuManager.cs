@@ -6,12 +6,12 @@ public class MenuManager : MonoBehaviour {
 
 	public void OnEnable()
 	{
-		LevelMaster.PauseGame (true);
+		LevelMaster.SendPauseNotification (true);
 	}
 
 	public void OnDisable()
 	{
-		LevelMaster.PauseGame (false);
+		LevelMaster.SendPauseNotification (false);
 	}
 
 	public void AdjustSFXVolume(float volume)
@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void RestartLevel() {
-		LevelMaster.RestartLevel ();
+		LevelMaster.SendRestartNotification ();
 	}
 
 	public void QuitToMenu() {

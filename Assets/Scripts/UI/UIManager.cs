@@ -24,13 +24,11 @@ public class UIManager : MonoBehaviour {
 	public void ShowVictoryPanel()
 	{
 		transform.FindChild ("VictoryPanel").gameObject.SetActive (true);
-		LevelMaster.PauseGame (true);
 	}
 
 	public void ShowDefeatPanel()
 	{
 		transform.FindChild ("GameOverPanel").gameObject.SetActive (true);
-		LevelMaster.PauseGame (true);
 	}
 
 	public void SetEnemiesRemainingUI(int remaining) {

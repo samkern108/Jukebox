@@ -9,8 +9,6 @@ public class L1_Instructions : MonoBehaviour {
 	private int stage = 0;
 
 	void Start() {
-		StereoManager.spawningDisabled = true;
-
 		arrow = transform.FindChild ("Arrow").gameObject;
 		spacebar = transform.FindChild ("Spacebar").gameObject;
 		circle = transform.FindChild ("SelectionCircle").gameObject;
@@ -20,6 +18,7 @@ public class L1_Instructions : MonoBehaviour {
 		spacebar.SetActive (false);
 		mouse.SetActive (false);
 		circle.SetActive (false);
+
 		Invoke("NextStage", 2f);
 	}
 
@@ -57,7 +56,7 @@ public class L1_Instructions : MonoBehaviour {
 		if(stage == 3) { 
 			if (Input.GetKeyDown (KeyCode.Space)) {
 				StereoManager.spawningDisabled = false;
-				BeatMaster.gameStarted = true;
+				LevelMaster.SendPauseNotification (false);
 				Destroy (this.gameObject);
 			}
 		}

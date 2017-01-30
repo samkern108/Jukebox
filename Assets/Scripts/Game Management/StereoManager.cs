@@ -45,7 +45,7 @@ public class StereoManager : MonoBehaviour {
 	public static Stereo selectedStereo;
 
 	void Update () {
-		if (!Input.GetMouseButtonDown (0))
+		if (LevelMaster.paused || !Input.GetMouseButtonDown (0))
 			return;
 
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);

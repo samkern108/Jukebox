@@ -16,9 +16,6 @@ public class BeatMaster : MonoBehaviour {
 	public static int beat = 0;
 	public static int beatsPerMeasure = 4;
 
-	//SLOPPY! Instead, set the beat game object to be active when the game starts.
-	public static bool gameStarted = false;
-
 	private AudioSource metronome;
 	private static LineRenderer line;
 
@@ -69,21 +66,20 @@ public class BeatMaster : MonoBehaviour {
 
 		return new Vector2(xPos, yPos);
 	}
-
-	void FixedUpdate() {
-		if(gameStarted) {
-			timer += Time.fixedDeltaTime;
-			if (timer + Time.fixedDeltaTime <= timeBetweenBeats) {
-				Invoke ("SendTick", timeBetweenBeats-timer);
-				timer = (timer - timeBetweenBeats);
-			}
-		}
-	}
 		
 	//TODO(samkern): There's something fishy going on. It looks like that "Invoke" gets called pretty frequently.
 	private void SendTick() {
 		BroadcastMessage("Tick", beat);
 		metronome.Play ();
 		beat = (beat + 1) % beatsPerMeasure;
+	}
+
+	private static bool enabled = false;
+	public void Pause(bool pause) {
+		enabled = !pause;
+		if (pause)
+			CancelInvoke ();
+		else
+			InvokeRepeating ("SendTick",timeBetweenBeats,timeBetweenBeats);
 	}
 }

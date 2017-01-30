@@ -33,27 +33,34 @@ public class PulseWave : MonoBehaviour {
 	private int numPositions = 80;
 
 	public void Update() {
-		elapsedTime += Time.deltaTime;
+		if (enabled) {
+			elapsedTime += Time.deltaTime;
 
-		circle.radius += Time.deltaTime;
+			circle.radius += Time.deltaTime;
 
-		if (elapsedTime <= .3f) {
-			lineColor.a += Time.deltaTime * 4;
-		} else {
-			lineColor.a -= Time.deltaTime;
-		}
+			if (elapsedTime <= .3f) {
+				lineColor.a += Time.deltaTime * 4;
+			} else {
+				lineColor.a -= Time.deltaTime;
+			}
 
-		line.startColor = lineColor;
-		line.endColor = lineColor;
+			line.startColor = lineColor;
+			line.endColor = lineColor;
 
-		line.DrawCircle (circle.radius, numPositions);
+			line.DrawCircle (circle.radius, numPositions);
 	
-		if(elapsedTime >= 0.8f) {
-			Destroy(this.gameObject);
+			if (elapsedTime >= 0.8f) {
+				Destroy (this.gameObject);
+			}
 		}
 	}
 
 	public void OnTriggerEnter2D(Collider2D collider) {
 		collider.GetComponent <Enemy>().ReactToPulse(pulse);
+	}
+
+	private bool enabled = true;
+	public void Pause(bool pause) {
+		enabled = !pause;
 	}
 }

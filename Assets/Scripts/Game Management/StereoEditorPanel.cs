@@ -92,4 +92,9 @@ public class StereoEditorPanel : MonoBehaviour {
 	public void Tick(int beat) {
 		highlight.position = sliders [beat].transform.position;
 	}
+
+	public void Pause(bool pause) {
+		if(pause)
+			EditorModeOff ();
+	}
 }

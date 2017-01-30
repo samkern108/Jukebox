@@ -64,4 +64,8 @@ public class Enemy : MonoBehaviour {
 		//anim.SetTrigger ("Pulse");
 		spriteRenderer.color = ColorHelper.CombineColors (spriteRenderer.color, pulse.pulseColor);
 	}
+
+	public void Pause(bool pause) {
+		moving = !pause;
+	}
 }
