@@ -19,7 +19,7 @@ public class L1_Instructions : MonoBehaviour {
 		mouse.SetActive (false);
 		circle.SetActive (false);
 
-		Invoke("NextStage", 2f);
+		Invoke("NextStage", 0.5f);
 	}
 
 	public void NextStage() {
@@ -42,7 +42,7 @@ public class L1_Instructions : MonoBehaviour {
 			StereoManager.InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
 			circle.SetActive (false);
 			mouse.SetActive (false);
-			Invoke ("NextStage", 4f);
+			Invoke ("NextStage", 2f);
 			break;
 		case 2:
 			arrow.SetActive (true);
