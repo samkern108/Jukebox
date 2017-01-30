@@ -94,7 +94,14 @@ public class StereoEditorPanel : MonoBehaviour {
 	}
 
 	public void Pause(bool pause) {
-		if(pause)
+		if (pause) {
 			EditorModeOff ();
+			highlight.gameObject.SetActive (false);
+		} else
+			Invoke ("ActivateTickOnBeat",BeatMaster.timeBetweenBeats);
+	}
+
+	private void ActivateTickOnBeat() {
+		highlight.gameObject.SetActive (true);
 	}
 }
