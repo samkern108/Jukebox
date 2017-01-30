@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour {
 	 * The hard part is that the second and third rings only get filled up when the dot ONLY has that other color in previous dots.
 	 */
 	private int health = 1;
+	private static int enemiesAlive = 0;
 
 	private float startTime;
 	public float spacesPerBeat = 1f;
@@ -24,6 +25,8 @@ public class Enemy : MonoBehaviour {
 	private int waypointCount = 0;
 
 	public void Initialize(Path path) {
+		enemiesAlive++;
+
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		anim = GetComponent <Animator>();
 
@@ -52,8 +55,13 @@ public class Enemy : MonoBehaviour {
 			targetWaypoint = path.GetWaypoint (waypointCount);
 			//If we've reached the goal, we dieee!
 			if (targetWaypoint == transform.position) {
+				enemiesAlive--;
+
 				if(spriteRenderer.color != path.endColor)
 					LevelMaster.EnemyDied ();
+
+				if (enemiesAlive == 0)
+					LevelMaster.Victory ();
 				
 				Destroy (this.gameObject);
 			}
