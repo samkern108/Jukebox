@@ -86,7 +86,6 @@ public class Stereo : MonoBehaviour {
 	}
 
 	public void PlayAudio(int beatValue) {
-		audioSource.volume = .60f + (beatValue * .10f);
 		audioLowPassFilter.cutoffFrequency = beatValue * 2000;
 		audioDistortionFilter.distortionLevel = (beatValue * .25f);
 		audioSource.Play ();
