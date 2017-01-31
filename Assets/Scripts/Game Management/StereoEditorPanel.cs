@@ -29,16 +29,16 @@ public class StereoEditorPanel : MonoBehaviour {
 		controlsPanel.SetActive (false);
 	}
 
-	public static void InitializeStereoColors (float[][] stereoColors)
+	public static void InitializeStereoColors (string[] stereoColors)
 	{
 		p_ColorPanel = ResourceLoader.LoadPrefab(ResourceNamePrefab.ColorPanel);
 
 		float theta = Mathf.PI/2;
 
-		foreach (float[] color in stereoColors) {
+		foreach (string color in stereoColors) {
 			Color c;
 			GameObject colorPanel;
-			c = new Color (color[0], color[1], color[2], 1);
+			c = Palette.colorNames[color];
 
 			colorPanel = Instantiate (p_ColorPanel);
 			colorPanel.GetComponent <Image>().color = c;

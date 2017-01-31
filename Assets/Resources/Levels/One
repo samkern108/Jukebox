@@ -1,13 +1,13 @@
 {
 	"name": "One",
 	"lives":10,
-	"stereoColors": [[1, 0, 0]],
+	"stereoColors": ["red"],
 	"grid": {
 		"w": 12,
 		"h": 6
 	},
 	"paths": [{
-		"spawner": {"numEnemies":20,"beatsBetweenSpawn":0,"startColor":[0,0,0]},
+		"spawner": {"numEnemies":20,"beatsBetweenSpawn":0,"startColor":"black"},
 		"points": [
 			[0, 0],
 			[2, 0],
@@ -18,6 +18,6 @@
 			[8, 0],
 			[11, 0]
 		],
-		"endColor":[1,0,0]
+		"endColor":"red"
 	}]
 }

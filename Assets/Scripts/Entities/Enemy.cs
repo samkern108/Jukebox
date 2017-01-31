@@ -70,7 +70,10 @@ public class Enemy : MonoBehaviour {
 
 	public void ReactToPulse(Pulse pulse) {
 		//anim.SetTrigger ("Pulse");
-		spriteRenderer.color = ColorHelper.CombineColors (spriteRenderer.color, pulse.pulseColor);
+
+		//You want to mix the current color with the incoming color.
+		Color color = Palette.MixColor[spriteRenderer.color].Invoke(pulse.pulseColor);
+		spriteRenderer.color = color;
 	}
 
 	public void Pause(bool pause) {

@@ -27,7 +27,7 @@ public class Path : MonoBehaviour {
 		GameObject p_Spawner = ResourceLoader.LoadPrefab (ResourceNamePrefab.Spawner);
 		Instantiate (p_Spawner).GetComponent<Spawner>().InitializeSpawner(this, pathJSON.spawner);
 
-		endColor = new Color (pathJSON.endColor[0], pathJSON.endColor[1], pathJSON.endColor[2], 1);
+		endColor = Palette.colorNames[pathJSON.endColor];
 		GameObject endSprite = transform.Find ("End").gameObject;
 		endSprite.GetComponent <SpriteRenderer>().color = endColor;
 		endSprite.transform.position = levelPath[levelPath.Count - 1];

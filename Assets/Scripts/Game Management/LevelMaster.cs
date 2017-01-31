@@ -60,7 +60,7 @@ public class LevelMaster : MonoBehaviour {
 	}
 
 	public static void SendRestartNotification() {
-		self.BroadcastMessage ("ResetLevel");
+		self.BroadcastMessage ("InitLevel");
 	}
 
 	public static void SendPauseNotification(bool pause) {
