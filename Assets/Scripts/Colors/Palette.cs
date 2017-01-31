@@ -5,12 +5,12 @@ using UnityEngine;
 
 public abstract class Palette {
 
-	public static Color red = new Color (0.96f, 0.25f, 0.25f, 1.0f);
+	public static Color red = new Color (0.65f, 0.10f, 0.10f, 1.0f);
 	public static Color orange = new Color(0.98f, 0.81f, 0.30f, 1.0f);
 	public static Color yellow = new Color(0.94f, 0.94f, 0.25f, 1.0f);
 	public static Color green = new Color(0.50f, 0.94f, 0.41f, 1.0f);
-	public static Color blue = new Color(0.45f, 0.84f, 1.0f, 1.0f);
-	public static Color purple = new Color(0.79f, 0.41f, 0.94f, 1.0f);
+	public static Color blue = new Color(0.15f, 0.20f, 0.85f, 1.0f);
+	public static Color purple = new Color(0.40f, 0.0f, 0.55f, 1.0f);
 	public static Color black = new Color(0f, 0f, 0f, 1.0f);
 	public static Color white = new Color(1f, 1f, 1f, 1.0f);
 
@@ -33,7 +33,6 @@ public abstract class Palette {
 
 	private static Color CombineRed(Color color) {
 
-		Debug.Log ("CombineRed " + color);
 		if (color == Palette.orange)
 			return orange;
 		if (color == Palette.yellow)
@@ -90,7 +89,6 @@ public abstract class Palette {
 
 	public static Color CombineBlue(Color color) {
 
-		Debug.Log ("CombineBlue " + color);
 		if (color == Palette.red)
 			return purple;
 		if (color == Palette.orange)
