@@ -6,8 +6,6 @@ public class StereoManager : MonoBehaviour {
 
 	public static StereoManager self;
 
-	private static List<Stereo> stereos = new List<Stereo>();
-
 	public static GameObject p_pulseWave;
 
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;

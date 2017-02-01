@@ -76,12 +76,14 @@ public class Stereo : MonoBehaviour {
 
 		anim.SetTrigger ("Pulse");
 		
-		if (beatValues[beat] != 0) {
+		if (beatValues [beat] != 0) {
 			GameObject pulseWave = Instantiate (StereoManager.p_pulseWave);
-			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues[beat]);
+			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues [beat]);
 			pulseWave.transform.SetParent (transform);
-			audioSource.clip = audioClips[beatValues[beat] - 1];
-			PlayAudio (beatValues[beat]);
+			audioSource.clip = audioClips [beatValues [beat] - 1];
+			PlayAudio (beatValues [beat]);
+		} else if (audioSource.isPlaying) {
+			audioSource.Stop ();
 		}
 	}
 
