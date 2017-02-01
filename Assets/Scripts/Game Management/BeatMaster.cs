@@ -10,7 +10,6 @@ public class BeatMaster : MonoBehaviour {
 	public static int beatsAcrossWidth;
 	public static int beatsAcrossHeight;
 	public static float width, height;
-	private static float timer = 0.0f;
 	public static float beatSize;
 
 	public static int beat = 0;
@@ -74,9 +73,7 @@ public class BeatMaster : MonoBehaviour {
 		beat = (beat + 1) % beatsPerMeasure;
 	}
 
-	private static bool enabled = false;
 	public void Pause(bool pause) {
-		enabled = !pause;
 		if (pause)
 			CancelInvoke ();
 		else

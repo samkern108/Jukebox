@@ -33,7 +33,7 @@ public class PulseWave : MonoBehaviour {
 	private int numPositions = 80;
 
 	public void Update() {
-		if (enabled) {
+		if (!paused) {
 			elapsedTime += Time.deltaTime;
 
 			circle.radius += Time.deltaTime;
@@ -60,8 +60,8 @@ public class PulseWave : MonoBehaviour {
 		collider.GetComponent <Enemy>().ReactToPulse(pulse, transform.position);
 	}
 
-	private bool enabled = true;
+	private bool paused = false;
 	public void Pause(bool pause) {
-		enabled = !pause;
+		paused = pause;
 	}
 }
