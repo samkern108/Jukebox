@@ -1,20 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelMaster : MonoBehaviour {
 
 	public static int enemiesTotal, enemiesRemaining, enemiesLeftToSpawn, livesRemaining;
-	public static LevelMaster self;
 	public static LevelJSON level;
 
-	public static string levelToLoad = "Two";
-
 	public static bool paused = false;
+	private static string levelToLoad;
 
 	void Start () {
-		self = this;
+		DontDestroyOnLoad(transform.gameObject);
 		IOManager.Initialize ();
+	}
+
+	public void LoadLevel(string levelName) {
+		levelToLoad = levelName;
+		SceneManager.LoadScene (1);
+	}
+
+	public static void OkToLoad() {
 		level = IOManager.LoadLevel (levelToLoad);
 		livesRemaining = level.lives;
 		UIManager.self.SetLivesRemainingUI (level.lives);
@@ -71,11 +78,11 @@ public class LevelMaster : MonoBehaviour {
 		livesRemaining = level.lives;
 		UIManager.self.SetEnemiesRemainingUI(LevelMaster.enemiesTotal);
 
-		self.BroadcastMessage ("InitLevel");
+		Notifications.SendRestartNotification ();
 	}
 
 	public static void SendPauseNotification(bool pause) {
 		paused = pause;
-		self.BroadcastMessage ("Pause", pause);
+		Notifications.SendPauseNotification (pause);
 	}
 }
