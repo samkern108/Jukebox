@@ -82,4 +82,8 @@ public class BeatMaster : MonoBehaviour {
 		else
 			InvokeRepeating ("SendTick",timeBetweenBeats,timeBetweenBeats);
 	}
+
+	public void InitLevel() {
+		beat = 0;
+	}
 }

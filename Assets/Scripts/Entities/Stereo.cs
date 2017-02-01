@@ -90,4 +90,8 @@ public class Stereo : MonoBehaviour {
 		audioDistortionFilter.distortionLevel = (beatValue * .25f);
 		audioSource.Play ();
 	}
+
+	public void InitLevel() {
+		Destroy (this.gameObject);
+	}
 }

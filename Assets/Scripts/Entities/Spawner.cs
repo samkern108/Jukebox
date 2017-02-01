@@ -26,7 +26,8 @@ public class Spawner : MonoBehaviour {
 		countdown = beatsBetweenSpawns;
 
 		spawnTotal = spawner.numEnemies;
-		LevelMaster.enemiesRemaining += spawnTotal;
+		LevelMaster.enemiesTotal += spawnTotal;
+		UIManager.self.SetEnemiesRemainingUI(LevelMaster.enemiesTotal);
 	}
 
 	public void Tick(int beat) {
@@ -42,5 +43,10 @@ public class Spawner : MonoBehaviour {
 		}
 		else
 			countdown--;
+	}
+
+	public void InitLevel() {
+		spawned = 0;
+		countdown = 0;
 	}
 }

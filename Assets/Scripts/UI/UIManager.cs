@@ -38,4 +38,14 @@ public class UIManager : MonoBehaviour {
 	public void SetLivesRemainingUI(int remaining) {
 		GameObject.Find ("LivesRemaining").GetComponent<Text>().text = remaining + "";
 	}
+
+	private void HideAllUI() {
+		transform.FindChild ("VictoryPanel").gameObject.SetActive (false);
+		transform.FindChild ("GameOverPanel").gameObject.SetActive (false);
+		menu.SetActive (false);
+	}
+
+	public void InitLevel() {
+		HideAllUI ();
+	}
 }

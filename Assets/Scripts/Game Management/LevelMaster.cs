@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LevelMaster : MonoBehaviour {
 
-	public static int enemiesRemaining, livesRemaining;
+	public static int enemiesTotal, enemiesRemaining, livesRemaining;
 	public static LevelMaster self;
-	private LevelJSON level;
+	public static LevelJSON level;
 
 	public static string levelToLoad = "Two";
 
@@ -30,6 +30,7 @@ public class LevelMaster : MonoBehaviour {
 		}
 
 		SendPauseNotification (true);
+		SendRestartNotification ();
 	}
 
 	public static void EnemyDied() {
@@ -60,6 +61,10 @@ public class LevelMaster : MonoBehaviour {
 	}
 
 	public static void SendRestartNotification() {
+		enemiesRemaining = enemiesTotal;
+		livesRemaining = level.lives;
+		UIManager.self.SetEnemiesRemainingUI(LevelMaster.enemiesTotal);
+
 		self.BroadcastMessage ("InitLevel");
 	}
 

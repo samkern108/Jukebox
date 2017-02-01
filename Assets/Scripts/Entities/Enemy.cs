@@ -79,4 +79,8 @@ public class Enemy : MonoBehaviour {
 	public void Pause(bool pause) {
 		moving = !pause;
 	}
+
+	public void InitLevel() {
+		Destroy (gameObject);
+	}
 }

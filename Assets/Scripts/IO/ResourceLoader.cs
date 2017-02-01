@@ -59,4 +59,8 @@ public class ResourceLoader : MonoBehaviour {
 
 		return "unknown";
 	}
+
+	public void InitLevel() {
+		Destroy (this.gameObject);
+	}
 }
