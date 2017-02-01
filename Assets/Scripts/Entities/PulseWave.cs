@@ -37,6 +37,7 @@ public class PulseWave : MonoBehaviour {
 			elapsedTime += Time.deltaTime;
 
 			circle.radius += Time.deltaTime;
+			pulse.radius = circle.radius;
 
 			if (elapsedTime <= .3f) {
 				lineColor.a += Time.deltaTime * 4;
@@ -56,7 +57,7 @@ public class PulseWave : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D collider) {
-		collider.GetComponent <Enemy>().ReactToPulse(pulse);
+		collider.GetComponent <Enemy>().ReactToPulse(pulse, transform.position);
 	}
 
 	private bool enabled = true;

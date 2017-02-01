@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelMaster : MonoBehaviour {
 
-	public static int enemiesTotal, enemiesRemaining, livesRemaining;
+	public static int enemiesTotal, enemiesRemaining, enemiesLeftToSpawn, livesRemaining;
 	public static LevelMaster self;
 	public static LevelJSON level;
 
@@ -33,25 +33,30 @@ public class LevelMaster : MonoBehaviour {
 		SendRestartNotification ();
 	}
 
-	public static void EnemyDied() {
-		livesRemaining--;
-		UIManager.self.SetLivesRemainingUI (livesRemaining);
-
-		if (livesRemaining <= 0)
-			GameOver ();
+	public static void EnemyDied(bool subtractPoints) {
+		if (subtractPoints) {
+			livesRemaining--;
+			UIManager.self.SetLivesRemainingUI (livesRemaining);
+			if (livesRemaining <= 0)
+				GameOver ();
+		}
+		enemiesRemaining--;
+		if(enemiesRemaining == 0) {
+			Victory ();
+		}
 	}
 
 	public static void EnemySpawned() {
-		enemiesRemaining--;
-		UIManager.self.SetEnemiesRemainingUI (enemiesRemaining);
+		enemiesLeftToSpawn--;
+		UIManager.self.SetEnemiesRemainingUI (enemiesLeftToSpawn);
 	}
 
-	public static void GameOver() {
+	private static void GameOver() {
 		UIManager.self.ShowDefeatPanel ();
 		SendPauseNotification (true);
 	}
 
-	public static void Victory() {
+	private static void Victory() {
 		UIManager.self.ShowVictoryPanel ();
 		SendPauseNotification (true);
 	}
@@ -62,6 +67,7 @@ public class LevelMaster : MonoBehaviour {
 
 	public static void SendRestartNotification() {
 		enemiesRemaining = enemiesTotal;
+		enemiesLeftToSpawn = enemiesTotal;
 		livesRemaining = level.lives;
 		UIManager.self.SetEnemiesRemainingUI(LevelMaster.enemiesTotal);
 
