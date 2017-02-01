@@ -69,7 +69,7 @@ public class LevelMaster : MonoBehaviour {
 	}
 
 	public static void QuitToMenu() {
-		Application.Quit ();
+		SceneManager.LoadScene (0);
 	}
 
 	public static void SendRestartNotification() {
