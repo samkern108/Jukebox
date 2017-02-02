@@ -61,13 +61,11 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-	public void ReactToPulse(Pulse pulse, Vector3 centerpoint) {
-		if (Mathf.Abs(Vector2.Distance (centerpoint, transform.position) - pulse.radius) <= 1f) {
-			//You want to mix the current color with the incoming color.
-			anim.SetTrigger ("Pulse");
-			Color color = Palette.MixColor[spriteRenderer.color].Invoke(pulse.pulseColor);
-			spriteRenderer.color = color;
-		}
+	public void ReactToPulse(Pulse pulse) {
+		//You want to mix the current color with the incoming color.
+		anim.SetTrigger ("Pulse");
+		Color color = Palette.MixColor[spriteRenderer.color].Invoke(pulse.pulseColor);
+		spriteRenderer.color = color;
 	}
 
 	public void Pause(bool pause) {

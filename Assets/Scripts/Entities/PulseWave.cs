@@ -57,7 +57,9 @@ public class PulseWave : MonoBehaviour {
 	}
 
 	public void OnTriggerEnter2D(Collider2D collider) {
-		collider.GetComponent <Enemy>().ReactToPulse(pulse, transform.position);
+		if (Mathf.Abs (Vector2.Distance (collider.transform.position, transform.position) - pulse.radius) <= 1f) {
+			collider.GetComponent <Enemy> ().ReactToPulse (pulse);
+		}
 	}
 
 	private bool paused = false;
