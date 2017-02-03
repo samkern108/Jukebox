@@ -6,7 +6,7 @@ public class StereoManager : MonoBehaviour {
 
 	public static StereoManager self;
 
-	public static GameObject p_pulseWave;
+	public static GameObject p_pulseWaveCircle, p_pulseWaveRect, p_pulseWaveCone;
 
 	private static LineRenderer stereoLineRenderer, stereoRadiusLineRenderer;
 
@@ -16,7 +16,9 @@ public class StereoManager : MonoBehaviour {
 
 	public void Awake() {
 		self = this;
-		p_pulseWave = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWave);
+		p_pulseWaveCircle = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWaveCircle);
+		p_pulseWaveRect = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWaveRect);
+		p_pulseWaveCone = ResourceLoader.LoadPrefab (ResourceNamePrefab.PulseWaveCone);
 
 		stereoParent = GameObject.Find ("Stereos").transform;
 	}
