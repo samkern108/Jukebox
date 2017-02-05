@@ -30,6 +30,7 @@ public class PathJSON
 public class SpawnerJSON
 {
 	public int numEnemies { get; set; }
+	public int delayBeats { get; set; }
 	public int beatsBetweenSpawn { get; set; }
 	public string startColor { get; set; }
 }
