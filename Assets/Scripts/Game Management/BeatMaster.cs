@@ -5,15 +5,16 @@ using MovementEffects;
 
 public class BeatMaster : MonoBehaviour {
 
-	//TODO(samkern): Change this to BPM.
-	public static float timeBetweenBeats = 1.0f;
+	public static float beatsPerMinute = 80;
+	public static float timeBetweenBeats = 60/beatsPerMinute;
 	public static int beatsAcrossWidth;
 	public static int beatsAcrossHeight;
-	public static float width, height;
-	public static float beatSize;
 
+	public static float beatSize;
 	public static int beat = 0;
 	public static int beatsPerMeasure = 4;
+
+	private static float width, height;
 
 	private AudioSource metronome;
 	private static LineRenderer line;
