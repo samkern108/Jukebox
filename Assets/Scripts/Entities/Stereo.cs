@@ -16,7 +16,7 @@ public class Stereo : MonoBehaviour {
 
 	public int[] beatValues;
 
-	private bool deactivated = true;
+	public bool deactivated = true;
 
 	public void Initialize(Vector2 position, Pulse pulse) {
 		beatValues = new int[BeatMaster.beatsPerMeasure];
@@ -77,7 +77,7 @@ public class Stereo : MonoBehaviour {
 		anim.SetTrigger ("Pulse");
 		
 		if (beatValues [beat] != 0) {
-			GameObject pulseWave = Instantiate (StereoManager.p_pulseWaveRect);
+			GameObject pulseWave = Instantiate (StereoManager.p_pulseWaveCircle);
 			pulseWave.GetComponent<PulseWave> ().Initialize (pulse, beatValues [beat]);
 			pulseWave.transform.SetParent (transform);
 			audioSource.clip = audioClips [beatValues [beat] - 1];

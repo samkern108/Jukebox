@@ -71,6 +71,11 @@ public class StereoEditorPanel : MonoBehaviour {
 		for(int i = 0; i < sliders.Length; i++) {
 			sliders [i].Set(0, false);
 		}
+
+		if(StereoManager.selectedStereo.deactivated) {
+			Destroy (StereoManager.selectedStereo.gameObject);
+			StereoManager.selectedStereo = null;
+		}
 		active = false;
 	}
 
