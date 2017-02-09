@@ -1,7 +1,7 @@
 {
 	"name": "Two",
 	"lives":10,
-	"stereoColors": ["blue"],
+	"stereoColors": ["red", "blue"],
 	"grid": {
 		"w": 12,
 		"h": 6
@@ -18,14 +18,6 @@
 			[8, 0],
 			[11, 0]
 		],
-		"endColor":"blue"
-	},
-	{
-		"spawner": {"numEnemies":10,"beatsBetweenSpawn":3,"delayBeats":0,"startColor":"red"},
-		"points": [
-			[0, 1],
-			[11, 1]
-		],
-		"endColor":"blue"
+		"endColor":"purple"
 	}]
 }
