@@ -5,7 +5,7 @@ using MovementEffects;
 
 public class BeatMaster : MonoBehaviour {
 
-	public static float beatsPerMinute = 80;
+	public static float beatsPerMinute = 60;
 	public static float timeBetweenBeats = 60/beatsPerMinute;
 	public static int beatsAcrossWidth;
 	public static int beatsAcrossHeight;
