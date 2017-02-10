@@ -9,8 +9,8 @@
 	"paths": [{
 		"spawner": {"numEnemies":10,"beatsBetweenSpawn":3,"delayBeats":0,"startColor":"black"},
 		"points": [
-			[0, 0],
-			[11, 0]
+			[0, 3],
+			[11, 3]
 		],
 		"endColor":"red"
 	}]

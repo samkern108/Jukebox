@@ -17,10 +17,8 @@ public class Path : MonoBehaviour {
 
 		Vector3 newPos;
 		for (int i = 0; i < points.Length; i++) {
-			newPos = new Vector3(points [i][0], points[i][1]);
-			newPos *= BeatMaster.beatSize;
-			newPos.y += (int)(Mathf.Ceil (BeatMaster.beatsAcrossHeight / 2) * BeatMaster.beatSize);
-			levelPath.Add(newPos);
+			newPos = BeatMaster.GetClosestGridCellBotLeft (points [i] [0], points [i] [1]);
+			levelPath.Add (newPos);
 			line.SetPosition (i, levelPath[i]);
 		}
 
