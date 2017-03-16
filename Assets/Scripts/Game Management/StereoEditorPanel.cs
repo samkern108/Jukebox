@@ -11,6 +11,8 @@ public class StereoEditorPanel : MonoBehaviour {
 	private static GameObject controlsPanel;
 	private static Transform highlight;
 
+	private static LineRenderer lineRenderer;
+
 	private static Slider[] sliders;
 
 	private static Canvas canvas;
@@ -25,6 +27,8 @@ public class StereoEditorPanel : MonoBehaviour {
 		for(int i = 0; i < sliders.Length; i++) {
 			sliders[i].onValueChanged.AddListener(delegate{UpdateStereoBeat();}); 
 		}
+
+		lineRenderer = GetComponent <LineRenderer>();
 
 		controlsPanel.SetActive (false);
 	}
@@ -57,6 +61,7 @@ public class StereoEditorPanel : MonoBehaviour {
 	{
 		for(int i = 0; i < sliders.Length; i++) {
 			sliders [i].Set(stereo.beatValues [i], false);
+			lineRenderer.SetPosition (i, sliders[i].transform.position);
 		}
 	
 		canvas.transform.position = stereo.transform.position;
@@ -72,7 +77,7 @@ public class StereoEditorPanel : MonoBehaviour {
 			sliders [i].Set(0, false);
 		}
 
-		if(StereoManager.selectedStereo.deactivated) {
+		if(StereoManager.selectedStereo && StereoManager.selectedStereo.deactivated) {
 			Destroy (StereoManager.selectedStereo.gameObject);
 			StereoManager.selectedStereo = null;
 		}
@@ -90,8 +95,10 @@ public class StereoEditorPanel : MonoBehaviour {
 		if (StereoManager.selectedStereo == null)
 			return;
 
-		for (int i = 0; i < sliders.Length; i++)
+		for (int i = 0; i < sliders.Length; i++) {
 			StereoManager.selectedStereo.SetBeatValue (i, (int)(sliders [i].value));
+			lineRenderer.SetPosition (i, sliders[i].transform.position);
+		}
 	}
 
 	public void Tick(int beat) {

@@ -9,11 +9,22 @@ public class LevelMaster : MonoBehaviour {
 	public static LevelJSON level;
 
 	public static bool paused = false;
-	private static string levelToLoad;
+	private static string levelToLoad = "";
 
-	void Start () {
-		DontDestroyOnLoad(transform.gameObject);
-		IOManager.Initialize ();
+	public string levelFromUI = "one";
+
+	private static LevelMaster self;
+
+	void Awake () {
+		// Maintain single instance
+		if (self) {
+			Destroy (transform.gameObject);
+		}
+		else {
+			DontDestroyOnLoad (transform.gameObject);
+			IOManager.Initialize ();
+			self = this;
+		}
 	}
 
 	public void LoadLevel(string levelName) {
@@ -22,6 +33,9 @@ public class LevelMaster : MonoBehaviour {
 	}
 
 	public static void OkToLoad() {
+		if(levelToLoad.Length == 0)
+			levelToLoad = self.levelFromUI;
+
 		level = IOManager.LoadLevel (levelToLoad);
 		livesRemaining = level.lives;
 		UIManager.self.SetLivesRemainingUI (level.lives);

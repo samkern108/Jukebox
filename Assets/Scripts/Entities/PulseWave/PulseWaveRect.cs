@@ -4,23 +4,24 @@ using System.Collections;
 public class PulseWaveRect : PulseWave {
 
 	private BoxCollider2D boxCollider;
+	private float boxColliderBuffer;
 
 	public override void Initialize(Pulse pulse, int intensity) {
 		base.Initialize (pulse, intensity);
 		boxCollider = GetComponent<BoxCollider2D> ();
-		float side = BeatMaster.beatSize/2 + 2 * intensity;
-		boxCollider.size = new Vector2(side, side);
+		pulse.radius = (intensity * 3) * (BeatMaster.beatSize);
+		boxCollider.size = new Vector2(pulse.radius, pulse.radius);
+
+		boxColliderBuffer = GetComponent <LineRenderer>().startWidth;
 	}
 
 	public override void Update() {
 		base.Update ();
 		if (!paused) {
 
-			float time = Time.deltaTime;
+			pulse.radius += Time.deltaTime;
 
-			boxCollider.size += new Vector2(time, time);
-			// TODO(samkern): Uhh is /2 correct? How do we use radius again?
-			pulse.radius = boxCollider.size.x/2;
+			boxCollider.size = new Vector2(pulse.radius + boxColliderBuffer, pulse.radius + boxColliderBuffer);
 
 			if (elapsedTime <= .3f) {
 				lineColor.a += Time.deltaTime * 4;

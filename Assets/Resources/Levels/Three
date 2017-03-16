@@ -1,5 +1,5 @@
 {
-	"name": "Two",
+	"name": "Three",
 	"lives":10,
 	"stereoColors": ["red", "blue"],
 	"grid": {
@@ -7,17 +7,33 @@
 		"h": 6
 	},
 	"paths": [{
-		"spawner": {"numEnemies":20,"beatsBetweenSpawn":0,"startColor":"black"},
+		"spawner": {"numEnemies":20,"beatsBetweenSpawn":2,"startColor":"black"},
 		"points": [
-			[0, 0],
-			[2, 0],
-			[2, -2],
-			[5, -2],
-			[5, 2],
-			[8, 2],
-			[8, 0],
-			[11, 0]
+			[0, 3],
+			[2, 3],
+			[2, 1],
+			[5, 1],
+			[5, 5],
+			[8, 5],
+			[8, 3],
+			[11, 3]
 		],
 		"endColor":"purple"
+	},
+{
+		"spawner": {"numEnemies":20,"beatsBetweenSpawn":1,"startColor":"black"},
+		"points": [
+			[0, 6],
+			[11, 6]
+		],
+		"endColor":"red"
+	},
+{
+		"spawner": {"numEnemies":20,"beatsBetweenSpawn":1,"startColor":"black"},
+		"points": [
+			[0, 2],
+			[11, 2]
+		],
+		"endColor":"blue"
 	}]
 }
