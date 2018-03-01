@@ -49,8 +49,7 @@ public class LevelMaster : MonoBehaviour {
 			path.InitializePath (pathJSON);
 			path.transform.position = Vector3.zero;
 		}
-
-		SendPauseNotification (true);
+			
 		SendRestartNotification ();
 	}
 

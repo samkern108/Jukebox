@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour {
 	public void Awake()
 	{
 		self = this;
-		menu = transform.FindChild ("Menu").gameObject;
+		menu = transform.Find ("Menu").gameObject;
 		IOManager.Initialize ();
 	}
 
@@ -25,12 +25,12 @@ public class UIManager : MonoBehaviour {
 
 	public void ShowVictoryPanel()
 	{
-		transform.FindChild ("VictoryPanel").gameObject.SetActive (true);
+		transform.Find ("VictoryPanel").gameObject.SetActive (true);
 	}
 
 	public void ShowDefeatPanel()
 	{
-		transform.FindChild ("GameOverPanel").gameObject.SetActive (true);
+		transform.Find ("GameOverPanel").gameObject.SetActive (true);
 	}
 
 	public void SetEnemiesRemainingUI(int remaining) {
@@ -42,8 +42,8 @@ public class UIManager : MonoBehaviour {
 	}
 
 	private void HideAllUI() {
-		transform.FindChild ("VictoryPanel").gameObject.SetActive (false);
-		transform.FindChild ("GameOverPanel").gameObject.SetActive (false);
+		transform.Find ("VictoryPanel").gameObject.SetActive (false);
+		transform.Find ("GameOverPanel").gameObject.SetActive (false);
 		menu.SetActive (false);
 	}
 

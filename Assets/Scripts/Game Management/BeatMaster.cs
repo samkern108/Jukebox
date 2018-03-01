@@ -40,7 +40,7 @@ public class BeatMaster : MonoBehaviour {
 	}
 
 	private static void DrawBeatGrid() {
-		line.numPositions = (BeatMaster.beatsAcrossWidth * 2) + (BeatMaster.beatsAcrossHeight * 2);
+		line.positionCount = (BeatMaster.beatsAcrossWidth * 2) + (BeatMaster.beatsAcrossHeight * 2);
 
 		int position = 0;
 		float posY = 0;

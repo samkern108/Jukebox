@@ -13,7 +13,7 @@ public class Path : MonoBehaviour {
 
 		int[][] points = pathJSON.points;
 	
-		line.numPositions = points.Length;
+		line.positionCount = points.Length;
 
 		Vector3 newPos;
 		for (int i = 0; i < points.Length; i++) {

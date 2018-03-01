@@ -7,7 +7,7 @@ public static class EX_LineRenderer {
 	public static void DrawCircle(this LineRenderer line, float radius, int numPositions) {
 		float x, y;
 		float delta = (2 * Mathf.PI) / numPositions;
-		line.numPositions = numPositions + 1;
+		line.positionCount = numPositions + 1;
 		for (int i = 0; i < (numPositions + 1); i++) 
 		{
 			x = radius * Mathf.Cos (delta * i);
@@ -18,7 +18,7 @@ public static class EX_LineRenderer {
 
 	public static void DrawBox(this LineRenderer line, float side) {
 		side = side / 2;
-		line.numPositions = 5;
+		line.positionCount = 5;
 		// TODO(samkern): If I don't use world space or something, will I still have to add line.transform.position?
 		line.SetPosition (0, line.transform.position + new Vector3(side, side, 0));
 		line.SetPosition (1, line.transform.position + new Vector3(side, -side, 0));

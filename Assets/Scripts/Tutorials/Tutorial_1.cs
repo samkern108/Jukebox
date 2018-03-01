@@ -3,29 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class L1_Instructions : MonoBehaviour {
-
-	private GameObject arrow, spacebar, mouse, circle;
-	private int stage = 0;
+public class Tutorial_1 : Tutorial {
 
 	void Start() {
-		arrow = transform.FindChild ("Arrow").gameObject;
-		spacebar = transform.FindChild ("Spacebar").gameObject;
-		circle = transform.FindChild ("SelectionCircle").gameObject;
-		mouse = circle.transform.FindChild ("Mouse").gameObject;
-
-		arrow.SetActive (false);
-		spacebar.SetActive (false);
-		mouse.SetActive (false);
-		circle.SetActive (false);
-
 		Invoke("NextStage", 0.5f);
 	}
 
 	public void NextStage() {
 		switch (stage) {
 		case 0: 
-			RectTransform circleTransform = circle.GetComponent<RectTransform>();
+			RectTransform circleTransform = icon_selectionCircle.GetComponent<RectTransform>();
 			RectTransform CanvasRect = GetComponent<Canvas>().GetComponent<RectTransform>();
 
 			Vector2 ViewportPosition=Camera.main.WorldToViewportPoint(BeatMaster.GetClosestGridCellCenter(6, 3));
@@ -35,18 +22,18 @@ public class L1_Instructions : MonoBehaviour {
 
 			circleTransform.anchoredPosition = WorldObject_ScreenPosition;
 
-			circle.SetActive (true);
-			mouse.SetActive (true);
+			icon_selectionCircle.SetActive (true);
+			icon_mouse.SetActive (true);
 			break;
 		case 1:
 			StereoManager.InstantiateStereo (Camera.main.ScreenToWorldPoint (Input.mousePosition));
-			circle.SetActive (false);
-			mouse.SetActive (false);
+			icon_selectionCircle.SetActive (false);
+			icon_mouse.SetActive (false);
 			Invoke ("NextStage", 2f);
 			break;
 		case 2:
-			arrow.SetActive (true);
-			spacebar.SetActive (true);
+			icon_arrow.SetActive (true);
+			icon_spacebar.SetActive (true);
 			break;
 		}
 		stage++;

@@ -4,6 +4,7 @@ using System.IO;
 
 //The names of all resources that are used by the game. This keeps them in a centralized place.
 public enum ResourceNamePrefab {Dot, Stereo, StereoShadow, PulseWaveCircle, PulseWaveRect, PulseWaveCone, Enemy, StereoTemplate, ColorPanel, Path, Spawner};
+public enum ResourceNameIcon { Arrow, Spacebar, SelectionCircle, Mouse }
 public enum ResourceNameSprite {};
 public enum ResourceNameMusic {};
 public enum SFXInstrument { Synth, Guitar, Thrash };
@@ -12,6 +13,7 @@ public class ResourceLoader : MonoBehaviour {
 
 	private static string pathToMusic = "Audio/Music/";
 	private static string pathToPrefabs = "Prefabs/";
+	private static string pathToIconPrefabs = "Prefabs/Icons/";
 	private static string pathToSprites = "Sprites/";
 
 	private static string[] fileNamesAudio;
@@ -19,6 +21,11 @@ public class ResourceLoader : MonoBehaviour {
 	public static GameObject LoadPrefab(ResourceNamePrefab prefabName)
 	{
 		return Resources.Load <GameObject>(pathToPrefabs + prefabName.ToString());
+	}
+
+	public static GameObject LoadIcon(ResourceNameIcon iconName)
+	{
+		return Resources.Load <GameObject>(pathToIconPrefabs + iconName.ToString());
 	}
 
 	public static Sprite LoadSprite(ResourceNameSprite name)
